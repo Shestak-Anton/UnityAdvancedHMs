@@ -37,11 +37,11 @@ namespace ShootEmUp
                 return;
             }
 
-            this.currentTime -= Time.fixedDeltaTime;
-            if (this.currentTime <= 0)
+            currentTime -= Time.fixedDeltaTime;
+            if (currentTime <= 0)
             {
-                this.Fire();
-                this.currentTime += this.countdown;
+                Fire();
+                currentTime += this.countdown;
             }
         }
 
@@ -50,7 +50,7 @@ namespace ShootEmUp
             var startPosition = this.weaponComponent.Position;
             var vector = (Vector2) this.target.transform.position - startPosition;
             var direction = vector.normalized;
-            this.OnFire?.Invoke(this.gameObject, startPosition, direction);
+            OnFire?.Invoke(this.gameObject, startPosition, direction);
         }
     }
 }

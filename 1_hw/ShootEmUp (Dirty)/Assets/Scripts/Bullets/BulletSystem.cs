@@ -5,90 +5,77 @@ namespace ShootEmUp
 {
     public sealed class BulletSystem : MonoBehaviour
     {
-        [SerializeField]
-        private int initialCount = 50;
-        
+        [SerializeField] private int initialCount = 50;
         [SerializeField] private Transform container;
         [SerializeField] private Bullet prefab;
+
         [SerializeField] private Transform worldTransform;
         [SerializeField] private LevelBounds levelBounds;
 
-        private readonly Queue<Bullet> m_bulletPool = new();
-        private readonly HashSet<Bullet> m_activeBullets = new();
-        private readonly List<Bullet> m_cache = new();
-        
+        private readonly Queue<Bullet> _bulletPool = new();
+        private readonly HashSet<Bullet> _activeBullets = new();
+        private readonly List<Bullet> _cache = new();
+
         private void Awake()
         {
-            for (var i = 0; i < this.initialCount; i++)
+            for (var i = 0; i < initialCount; i++)
             {
-                var bullet = Instantiate(this.prefab, this.container);
-                this.m_bulletPool.Enqueue(bullet);
+                var bullet = Instantiate(prefab, container);
+                _bulletPool.Enqueue(bullet);
             }
         }
-        
+
         private void FixedUpdate()
         {
-            this.m_cache.Clear();
-            this.m_cache.AddRange(this.m_activeBullets);
+            _cache.Clear();
+            _cache.AddRange(_activeBullets);
 
-            for (int i = 0, count = this.m_cache.Count; i < count; i++)
+            for (int i = 0, count = _cache.Count; i < count; i++)
             {
-                var bullet = this.m_cache[i];
-                if (!this.levelBounds.InBounds(bullet.transform.position))
+                var bullet = _cache[i];
+                if (!levelBounds.InBounds(bullet.transform.position))
                 {
-                    this.RemoveBullet(bullet);
+                    RemoveBullet(bullet);
                 }
             }
         }
 
-        public void FlyBulletByArgs(Args args)
+        public void FlyBulletByArgs(BulletData bulletData)
         {
-            if (this.m_bulletPool.TryDequeue(out var bullet))
+            if (_bulletPool.TryDequeue(out var bullet))
             {
-                bullet.transform.SetParent(this.worldTransform);
+                bullet.transform.SetParent(worldTransform);
             }
             else
             {
-                bullet = Instantiate(this.prefab, this.worldTransform);
+                bullet = Instantiate(prefab, worldTransform);
             }
 
-            bullet.SetPosition(args.position);
-            bullet.SetColor(args.color);
-            bullet.SetPhysicsLayer(args.physicsLayer);
-            bullet.damage = args.damage;
-            bullet.isPlayer = args.isPlayer;
-            bullet.SetVelocity(args.velocity);
-            
-            if (this.m_activeBullets.Add(bullet))
-            {
-                bullet.OnCollisionEntered += this.OnBulletCollision;
-            }
+            bullet.SetPosition(bulletData.Position);
+            bullet.SetColor(bulletData.Color);
+            bullet.SetPhysicsLayer(bulletData.PhysicsLayer);
+            bullet.Damage = bulletData.Damage;
+            bullet.IsPlayer = bulletData.IsPlayer;
+            bullet.SetVelocity(bulletData.GetVelocity());
+
+            if (_activeBullets.Add(bullet))
+                bullet.OnCollisionEntered += OnBulletCollision;
         }
-        
+
         private void OnBulletCollision(Bullet bullet, Collision2D collision)
         {
             BulletUtils.DealDamage(bullet, collision.gameObject);
-            this.RemoveBullet(bullet);
+            RemoveBullet(bullet);
         }
 
         private void RemoveBullet(Bullet bullet)
         {
-            if (this.m_activeBullets.Remove(bullet))
+            if (_activeBullets.Remove(bullet))
             {
-                bullet.OnCollisionEntered -= this.OnBulletCollision;
-                bullet.transform.SetParent(this.container);
-                this.m_bulletPool.Enqueue(bullet);
+                bullet.OnCollisionEntered -= OnBulletCollision;
+                bullet.transform.SetParent(container);
+                _bulletPool.Enqueue(bullet);
             }
-        }
-        
-        public struct Args
-        {
-            public Vector2 position;
-            public Vector2 velocity;
-            public Color color;
-            public int physicsLayer;
-            public int damage;
-            public bool isPlayer;
         }
     }
 }

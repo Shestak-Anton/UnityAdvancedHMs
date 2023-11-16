@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ShootEmUp
@@ -12,17 +13,17 @@ namespace ShootEmUp
 
         public Transform RandomSpawnPosition()
         {
-            return this.RandomTransform(this.spawnPositions);
+            return RandomTransform(spawnPositions);
         }
 
         public Transform RandomAttackPosition()
         {
-            return this.RandomTransform(this.attackPositions);
+            return RandomTransform(attackPositions);
         }
 
-        private Transform RandomTransform(Transform[] transforms)
+        private static Transform RandomTransform(IReadOnlyList<Transform> transforms)
         {
-            var index = Random.Range(0, transforms.Length);
+            var index = Random.Range(0, transforms.Count);
             return transforms[index];
         }
     }

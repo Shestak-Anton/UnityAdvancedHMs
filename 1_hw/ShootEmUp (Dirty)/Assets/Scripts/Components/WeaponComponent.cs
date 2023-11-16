@@ -4,17 +4,26 @@ namespace ShootEmUp
 {
     public sealed class WeaponComponent : MonoBehaviour
     {
-        public Vector2 Position
-        {
-            get { return this.firePoint.position; }
-        }
+        [SerializeField] private Transform firePoint;
+        [SerializeField] private BulletConfig bulletConfig;
 
-        public Quaternion Rotation
-        {
-            get { return this.firePoint.rotation; }
-        }
+        public Vector2 Position => firePoint.position;
+        private Quaternion Rotation => firePoint.rotation;
 
-        [SerializeField]
-        private Transform firePoint;
+        public void Shoot()
+        {
+            // todo rework
+            var bulletSystem = FindObjectOfType<BulletSystem>();
+            bulletSystem.FlyBulletByArgs(new BulletData
+            {
+                IsPlayer = true,
+                PhysicsLayer = (int)bulletConfig.physicsLayer,
+                Color = bulletConfig.color,
+                Damage = bulletConfig.damage,
+                Position = Position,
+                Direction = Rotation * Vector3.up,
+                Speed = bulletConfig.speed
+            });
+        }
     }
 }

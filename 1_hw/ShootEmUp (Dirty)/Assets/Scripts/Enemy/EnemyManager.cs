@@ -22,10 +22,10 @@ namespace ShootEmUp
                 var enemy = this._enemyPool.SpawnEnemy();
                 if (enemy != null)
                 {
-                    if (this.m_activeEnemies.Add(enemy))
+                    if (m_activeEnemies.Add(enemy))
                     {
-                        enemy.GetComponent<HitPointsComponent>().hpEmpty += this.OnDestroyed;
-                        enemy.GetComponent<EnemyAttackAgent>().OnFire += this.OnFire;
+                        enemy.GetComponent<HitPointsComponent>().OnHitPointsDrained += OnDestroyed;
+                        enemy.GetComponent<EnemyAttackAgent>().OnFire += OnFire;
                     }    
                 }
             }
@@ -35,8 +35,8 @@ namespace ShootEmUp
         {
             if (m_activeEnemies.Remove(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().hpEmpty -= this.OnDestroyed;
-                enemy.GetComponent<EnemyAttackAgent>().OnFire -= this.OnFire;
+                enemy.GetComponent<HitPointsComponent>().OnHitPointsDrained -= OnDestroyed;
+                enemy.GetComponent<EnemyAttackAgent>().OnFire -= OnFire;
 
                 _enemyPool.UnspawnEnemy(enemy);
             }
@@ -44,14 +44,15 @@ namespace ShootEmUp
 
         private void OnFire(GameObject enemy, Vector2 position, Vector2 direction)
         {
-            _bulletSystem.FlyBulletByArgs(new BulletSystem.Args
+            _bulletSystem.FlyBulletByArgs(new BulletData
             {
-                isPlayer = false,
-                physicsLayer = (int) PhysicsLayer.ENEMY,
-                color = Color.red,
-                damage = 1,
-                position = position,
-                velocity = direction * 2.0f
+                IsPlayer = false,
+                PhysicsLayer = (int) PhysicsLayer.ENEMY_BULLET,
+                Color = Color.red,
+                Damage = 1,
+                Position = position,
+                Direction = direction,
+                Speed = 2f,
             });
         }
     }
