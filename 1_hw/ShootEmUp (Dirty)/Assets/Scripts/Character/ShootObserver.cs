@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterShootObserver : MonoBehaviour
+    public sealed class ShootObserver : MonoBehaviour
     {
         [SerializeField] private InputManager inputManager;
         [SerializeField] private WeaponComponent weaponComponent;
