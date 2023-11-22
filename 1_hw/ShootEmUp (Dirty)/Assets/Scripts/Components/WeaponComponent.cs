@@ -26,7 +26,7 @@ namespace ShootEmUp
         public void Shoot(Vector3 direction)
         {
             var bullet = BulletData.FabricateBulletData(bulletConfig, Position, direction);
-            _bulletSystem.FlyBulletByArgs(bullet);
+            _bulletSystem.ShootBullet(bullet);
         }
     }
 }

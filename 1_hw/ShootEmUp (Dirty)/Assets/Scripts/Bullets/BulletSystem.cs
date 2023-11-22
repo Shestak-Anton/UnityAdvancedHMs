@@ -12,65 +12,75 @@ namespace ShootEmUp
         [SerializeField] private Transform worldTransform;
         [SerializeField] private LevelBounds levelBounds;
 
-        private readonly Queue<BulletComponent> m_bulletPool = new();
-        private readonly HashSet<BulletComponent> m_activeBullets = new();
-        private readonly List<BulletComponent> m_cache = new();
+        private readonly Queue<BulletComponent> _bulletPool = new();
+
+        private readonly HashSet<BulletComponent> _activeBullets = new();
+        private readonly List<BulletComponent> _cache = new();
 
         private void Awake()
         {
-            for (var i = 0; i < this.initialCount; i++)
-            {
-                var bullet = Instantiate(this.prefab, this.container);
-                this.m_bulletPool.Enqueue(bullet);
-            }
+            FillPool(initialCount);
         }
 
         private void FixedUpdate()
         {
-            this.m_cache.Clear();
-            this.m_cache.AddRange(this.m_activeBullets);
+            _cache.Clear();
+            _cache.AddRange(_activeBullets);
 
-            for (int i = 0, count = this.m_cache.Count; i < count; i++)
+            for (int i = 0, count = _cache.Count; i < count; i++)
             {
-                var bullet = this.m_cache[i];
-                if (!this.levelBounds.InBounds(bullet.transform.position))
+                var bullet = _cache[i];
+                if (!levelBounds.InBounds(bullet.transform.position))
                 {
-                    this.RemoveBullet(bullet);
+                    RemoveBullet(bullet);
                 }
             }
         }
 
-        public void FlyBulletByArgs(BulletData bulletData)
+        public void ShootBullet(BulletData bulletData)
         {
-            if (this.m_bulletPool.TryDequeue(out var bullet))
-            {
-                bullet.transform.SetParent(this.worldTransform);
-            }
-            else
-            {
-                bullet = Instantiate(this.prefab, this.worldTransform);
-            }
-            bullet.BulletData = bulletData;
+            var bullet = GetBullet(bulletData);
+            if (_activeBullets.Add(bullet))
+                bullet.OnCollisionEntered += OnBulletCollision;
+        }
 
-            if (this.m_activeBullets.Add(bullet))
-            {
-                bullet.OnCollisionEntered += this.OnBulletCollision;
-            }
+        private BulletComponent GetBullet(BulletData bulletData)
+        {
+            if (!_bulletPool.TryDequeue(out var bullet)) return Instantiate(prefab, worldTransform);
+            bullet.transform.SetParent(worldTransform);
+            bullet.BulletData = bulletData;
+            return bullet;
         }
 
         private void OnBulletCollision(BulletComponent bulletComponent, Collision2D collision)
         {
-            BulletUtils.DealDamage(bulletComponent, collision.gameObject);
-            this.RemoveBullet(bulletComponent);
+            TryDealDamage(collision.gameObject, bulletComponent.BulletData.Damage);
+            RemoveBullet(bulletComponent);
+        }
+
+        private void TryDealDamage(GameObject collidedGo, int damage)
+        {
+            if (collidedGo.TryGetComponent(out DamageDealerComponent damageDealer))
+            {
+                damageDealer.DealDamage(damage);
+            }
         }
 
         private void RemoveBullet(BulletComponent bulletComponent)
         {
-            if (this.m_activeBullets.Remove(bulletComponent))
+            if (!_activeBullets.Remove(bulletComponent)) return;
+
+            bulletComponent.OnCollisionEntered -= OnBulletCollision;
+            bulletComponent.transform.SetParent(container);
+            _bulletPool.Enqueue(bulletComponent);
+        }
+
+        private void FillPool(int poolSize)
+        {
+            for (var i = 0; i < poolSize; i++)
             {
-                bulletComponent.OnCollisionEntered -= this.OnBulletCollision;
-                bulletComponent.transform.SetParent(this.container);
-                this.m_bulletPool.Enqueue(bulletComponent);
+                var bullet = Instantiate(prefab, container);
+                _bulletPool.Enqueue(bullet);
             }
         }
     }
