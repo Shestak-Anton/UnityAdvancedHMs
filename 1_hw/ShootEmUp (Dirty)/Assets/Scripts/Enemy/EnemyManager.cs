@@ -7,6 +7,7 @@ namespace ShootEmUp
     public sealed class EnemyManager : MonoBehaviour
     {
         [SerializeField] private EnemyPool _enemyPool;
+        [SerializeField] private BulletConfig bulletConfig;
 
         [SerializeField] private BulletSystem _bulletSystem;
 
@@ -42,16 +43,8 @@ namespace ShootEmUp
 
         private void OnFire(GameObject enemy, Vector2 position, Vector2 direction)
         {
-            var bulletData = new BulletSystem.BulletData
-            (
-                isPlayer: false,
-                physicsLayer: (int)PhysicsLayer.ENEMY_BULLET,
-                color: Color.red,
-                damage: 20,
-                position: position,
-                velocity: direction * 2.0f
-            );
-            _bulletSystem.FlyBulletByArgs(bulletData);
+            var bullet = BulletData.GetEnemyBulletData(bulletConfig, position, direction);
+            _bulletSystem.FlyBulletByArgs(bullet);
         }
     }
 }

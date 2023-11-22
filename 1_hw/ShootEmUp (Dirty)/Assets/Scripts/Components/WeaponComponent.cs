@@ -19,15 +19,8 @@ namespace ShootEmUp
 
         public void Shoot()
         {
-            var args = new BulletSystem.BulletData(
-                isPlayer: true,
-                physicsLayer: (int)_bulletConfig.physicsLayer,
-                color: _bulletConfig.color,
-                damage: _bulletConfig.damage,
-                position: Position,
-                velocity: Rotation * Vector3.up * _bulletConfig.speed
-            );
-            _bulletSystem.FlyBulletByArgs(args);
+            var bullet = BulletData.GetCharacterBulletData(_bulletConfig, Position, Rotation * Vector3.up);
+            _bulletSystem.FlyBulletByArgs(bullet);
         }
     }
 }

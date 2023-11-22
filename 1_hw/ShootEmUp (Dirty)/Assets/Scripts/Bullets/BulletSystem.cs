@@ -8,13 +8,13 @@ namespace ShootEmUp
         [SerializeField] private int initialCount = 50;
 
         [SerializeField] private Transform container;
-        [SerializeField] private Bullet prefab;
+        [SerializeField] private BulletComponent prefab;
         [SerializeField] private Transform worldTransform;
         [SerializeField] private LevelBounds levelBounds;
 
-        private readonly Queue<Bullet> m_bulletPool = new();
-        private readonly HashSet<Bullet> m_activeBullets = new();
-        private readonly List<Bullet> m_cache = new();
+        private readonly Queue<BulletComponent> m_bulletPool = new();
+        private readonly HashSet<BulletComponent> m_activeBullets = new();
+        private readonly List<BulletComponent> m_cache = new();
 
         private void Awake()
         {
@@ -50,13 +50,7 @@ namespace ShootEmUp
             {
                 bullet = Instantiate(this.prefab, this.worldTransform);
             }
-
-            bullet.SetPosition(bulletData.Position);
-            bullet.SetColor(bulletData.Color);
-            bullet.SetPhysicsLayer(bulletData.PhysicsLayer);
-            bullet.damage = bulletData.Damage;
-            bullet.isPlayer = bulletData.IsPlayer;
-            bullet.SetVelocity(bulletData.Velocity);
+            bullet.BulletData = bulletData;
 
             if (this.m_activeBullets.Add(bullet))
             {
@@ -64,47 +58,20 @@ namespace ShootEmUp
             }
         }
 
-        private void OnBulletCollision(Bullet bullet, Collision2D collision)
+        private void OnBulletCollision(BulletComponent bulletComponent, Collision2D collision)
         {
-            BulletUtils.DealDamage(bullet, collision.gameObject);
-            this.RemoveBullet(bullet);
+            BulletUtils.DealDamage(bulletComponent, collision.gameObject);
+            this.RemoveBullet(bulletComponent);
         }
 
-        private void RemoveBullet(Bullet bullet)
+        private void RemoveBullet(BulletComponent bulletComponent)
         {
-            if (this.m_activeBullets.Remove(bullet))
+            if (this.m_activeBullets.Remove(bulletComponent))
             {
-                bullet.OnCollisionEntered -= this.OnBulletCollision;
-                bullet.transform.SetParent(this.container);
-                this.m_bulletPool.Enqueue(bullet);
+                bulletComponent.OnCollisionEntered -= this.OnBulletCollision;
+                bulletComponent.transform.SetParent(this.container);
+                this.m_bulletPool.Enqueue(bulletComponent);
             }
-        }
-
-        public struct BulletData
-        {
-            public readonly Vector2 Position;
-            public readonly Vector2 Velocity;
-            public readonly Color Color;
-            public readonly int PhysicsLayer;
-            public readonly int Damage;
-            public readonly bool IsPlayer;
-
-            public BulletData(
-                Vector2 position,
-                Vector2 velocity,
-                Color color,
-                int physicsLayer,
-                int damage,
-                bool isPlayer)
-            {
-                Position = position;
-                Velocity = velocity;
-                Color = color;
-                PhysicsLayer = physicsLayer;
-                Damage = damage;
-                IsPlayer = isPlayer;
-            }
-            
         }
     }
 }
