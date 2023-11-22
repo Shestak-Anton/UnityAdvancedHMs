@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce164c84a74a425f8d2e82764aef9e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletConfig: {fileID: 11400000, guid: c734dc4acb82f42029b2f15f4ca32e82, type: 2}
   firePoint: {fileID: 3195880656587174614}
 --- !u!114 &8186052948131603766
 MonoBehaviour:

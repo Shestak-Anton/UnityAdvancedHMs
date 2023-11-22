@@ -397,6 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyPool: {fileID: 562298207}
+  bulletConfig: {fileID: 11400000, guid: c734dc4acb82f42029b2f15f4ca32e82, type: 2}
   _bulletSystem: {fileID: 363245577}
 --- !u!114 &562298207
 MonoBehaviour:
