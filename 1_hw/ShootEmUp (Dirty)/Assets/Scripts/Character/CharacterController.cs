@@ -8,10 +8,8 @@ namespace ShootEmUp
         [SerializeField] private GameManager gameManager;
         [SerializeField] private InputManager inputManager;
         [SerializeField] private HitPointsComponent hitPointsComponent;
-
-        [SerializeField] private BulletSystem _bulletSystem;
-        [SerializeField] private BulletConfig _bulletConfig;
-
+        [SerializeField] private WeaponComponent weaponComponent;
+        
         private bool _fireRequired;
 
         private void OnEnable()
@@ -37,16 +35,7 @@ namespace ShootEmUp
 
         private void ShootListener()
         {
-            var weapon = character.GetComponent<WeaponComponent>();
-            _bulletSystem.FlyBulletByArgs(new BulletSystem.Args
-            {
-                isPlayer = true,
-                physicsLayer = (int)_bulletConfig.physicsLayer,
-                color = _bulletConfig.color,
-                damage = _bulletConfig.damage,
-                position = weapon.Position,
-                velocity = weapon.Rotation * Vector3.up * _bulletConfig.speed
-            });
+            weaponComponent.Shoot();
         }
     }
 }
