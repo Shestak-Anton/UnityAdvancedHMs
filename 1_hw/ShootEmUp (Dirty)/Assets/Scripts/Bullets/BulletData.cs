@@ -9,40 +9,41 @@ namespace ShootEmUp
         public readonly Color Color;
         public readonly int PhysicsLayer;
         public readonly int Damage;
-        public bool IsPlayer { get; private set; }
+        public readonly Team Emitter;
 
-        private BulletData(Vector2 position, Vector2 velocity, Color color, int physicsLayer, int damage)
+        private BulletData(Vector2 position, Vector2 velocity, Color color, int physicsLayer, int damage, Team emitter)
         {
             Position = position;
             Velocity = velocity;
             Color = color;
             PhysicsLayer = physicsLayer;
             Damage = damage;
-            IsPlayer = true;
+            Emitter = emitter;
         }
 
-        public static BulletData GetEnemyBulletData(BulletConfig bulletConfig, Vector2 position, Vector2 direction)
+        public static BulletData FabricateBulletData(
+            BulletConfig bulletConfig,
+            Vector2 position,
+            Vector2 direction
+        )
         {
-            var bd = MapConfigToData(bulletConfig, position, direction);
-            bd.IsPlayer = false;
-            return bd;
+            return MapConfigToData(bulletConfig, position, direction);
         }
 
-        public static BulletData GetCharacterBulletData(BulletConfig bulletConfig, Vector2 position, Vector2 direction)
+        private static Vector2 GetDirectionByEmitter(Team emitter)
         {
-            var bd = MapConfigToData(bulletConfig, position, direction);
-            bd.IsPlayer = true;
-            return bd;
+            return emitter == Team.Player ? Vector2.up : Vector2.one;
         }
 
-        private static BulletData MapConfigToData(BulletConfig bulletConfig, Vector2 position, Vector2 direction)
+        private static BulletData MapConfigToData(BulletConfig bulletConfig, Vector2 position, Vector3 rotation)
         {
             return new BulletData(
                 position: position,
-                velocity: direction * bulletConfig.speed,
+                velocity: rotation * bulletConfig.speed,
                 color: bulletConfig.color,
                 physicsLayer: (int)bulletConfig.physicsLayer,
-                damage: bulletConfig.damage
+                damage: bulletConfig.damage,
+                emitter: bulletConfig.team
             );
         }
     }

@@ -43,7 +43,7 @@ namespace ShootEmUp
 
         private void OnFire(GameObject enemy, Vector2 position, Vector2 direction)
         {
-            var bullet = BulletData.GetEnemyBulletData(bulletConfig, position, direction);
+            var bullet = BulletData.FabricateBulletData(bulletConfig, position, direction);
             _bulletSystem.FlyBulletByArgs(bullet);
         }
     }

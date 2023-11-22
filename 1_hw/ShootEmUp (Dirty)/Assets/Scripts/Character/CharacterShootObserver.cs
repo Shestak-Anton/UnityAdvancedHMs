@@ -2,19 +2,24 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class ShootObserver : MonoBehaviour
+    public sealed class CharacterShootObserver : MonoBehaviour
     {
         [SerializeField] private InputManager inputManager;
         [SerializeField] private WeaponComponent weaponComponent;
 
         private void OnEnable()
         {
-            inputManager.OnShootListener += weaponComponent.Shoot;
+            inputManager.OnShootListener += Shoot;
         }
 
         private void OnDisable()
         {
-            inputManager.OnShootListener -= weaponComponent.Shoot;
+            inputManager.OnShootListener -= Shoot;
+        }
+
+        private void Shoot()
+        {
+            weaponComponent.Shoot(direction: Vector3.up);
         }
     }
 }

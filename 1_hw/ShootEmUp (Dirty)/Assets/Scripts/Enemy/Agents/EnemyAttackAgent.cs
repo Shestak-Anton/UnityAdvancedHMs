@@ -8,9 +8,10 @@ namespace ShootEmUp
 
         public event FireHandler OnFire;
 
-        [SerializeField] private WeaponComponent weaponComponent;
         [SerializeField] private EnemyMoveAgent moveAgent;
         [SerializeField] private float countdown;
+        [SerializeField] private WeaponComponent weaponComponent;
+        [SerializeField] private BulletConfig bulletConfig;
 
         private GameObject target;
         private float currentTime;
@@ -47,10 +48,7 @@ namespace ShootEmUp
 
         private void Fire()
         {
-            var startPosition = this.weaponComponent.Position;
-            var vector = (Vector2) this.target.transform.position - startPosition;
-            var direction = vector.normalized;
-            this.OnFire?.Invoke(this.gameObject, startPosition, direction);
+            weaponComponent.ShootAtTarget(target.transform.position);
         }
     }
 }

@@ -4,10 +4,10 @@ namespace ShootEmUp
 {
     public sealed class WeaponComponent : MonoBehaviour
     {
-        [SerializeField] private BulletConfig _bulletConfig;
         [SerializeField] private Transform firePoint;
+        [SerializeField] private BulletConfig bulletConfig;
 
-        public Vector2 Position => firePoint.position;
+        private Vector2 Position => firePoint.position;
         private Quaternion Rotation => firePoint.rotation;
 
         private BulletSystem _bulletSystem;
@@ -17,9 +17,15 @@ namespace ShootEmUp
             _bulletSystem = FindObjectOfType<BulletSystem>();
         }
 
-        public void Shoot()
+        public void ShootAtTarget(Vector2 target)
         {
-            var bullet = BulletData.GetCharacterBulletData(_bulletConfig, Position, Rotation * Vector3.up);
+            var vector = target - Position;
+            Shoot(vector.normalized);
+        }
+
+        public void Shoot(Vector3 direction)
+        {
+            var bullet = BulletData.FabricateBulletData(bulletConfig, Position, direction);
             _bulletSystem.FlyBulletByArgs(bullet);
         }
     }
