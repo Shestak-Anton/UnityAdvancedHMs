@@ -5,9 +5,8 @@ namespace ShootEmUp
 {
     public sealed class BulletSystem : MonoBehaviour
     {
-        [SerializeField]
-        private int initialCount = 50;
-        
+        [SerializeField] private int initialCount = 50;
+
         [SerializeField] private Transform container;
         [SerializeField] private Bullet prefab;
         [SerializeField] private Transform worldTransform;
@@ -16,7 +15,7 @@ namespace ShootEmUp
         private readonly Queue<Bullet> m_bulletPool = new();
         private readonly HashSet<Bullet> m_activeBullets = new();
         private readonly List<Bullet> m_cache = new();
-        
+
         private void Awake()
         {
             for (var i = 0; i < this.initialCount; i++)
@@ -25,7 +24,7 @@ namespace ShootEmUp
                 this.m_bulletPool.Enqueue(bullet);
             }
         }
-        
+
         private void FixedUpdate()
         {
             this.m_cache.Clear();
@@ -41,7 +40,7 @@ namespace ShootEmUp
             }
         }
 
-        public void FlyBulletByArgs(Args args)
+        public void FlyBulletByArgs(BulletData bulletData)
         {
             if (this.m_bulletPool.TryDequeue(out var bullet))
             {
@@ -52,19 +51,19 @@ namespace ShootEmUp
                 bullet = Instantiate(this.prefab, this.worldTransform);
             }
 
-            bullet.SetPosition(args.position);
-            bullet.SetColor(args.color);
-            bullet.SetPhysicsLayer(args.physicsLayer);
-            bullet.damage = args.damage;
-            bullet.isPlayer = args.isPlayer;
-            bullet.SetVelocity(args.velocity);
-            
+            bullet.SetPosition(bulletData.Position);
+            bullet.SetColor(bulletData.Color);
+            bullet.SetPhysicsLayer(bulletData.PhysicsLayer);
+            bullet.damage = bulletData.Damage;
+            bullet.isPlayer = bulletData.IsPlayer;
+            bullet.SetVelocity(bulletData.Velocity);
+
             if (this.m_activeBullets.Add(bullet))
             {
                 bullet.OnCollisionEntered += this.OnBulletCollision;
             }
         }
-        
+
         private void OnBulletCollision(Bullet bullet, Collision2D collision)
         {
             BulletUtils.DealDamage(bullet, collision.gameObject);
@@ -80,15 +79,32 @@ namespace ShootEmUp
                 this.m_bulletPool.Enqueue(bullet);
             }
         }
-        
-        public struct Args
+
+        public struct BulletData
         {
-            public Vector2 position;
-            public Vector2 velocity;
-            public Color color;
-            public int physicsLayer;
-            public int damage;
-            public bool isPlayer;
+            public readonly Vector2 Position;
+            public readonly Vector2 Velocity;
+            public readonly Color Color;
+            public readonly int PhysicsLayer;
+            public readonly int Damage;
+            public readonly bool IsPlayer;
+
+            public BulletData(
+                Vector2 position,
+                Vector2 velocity,
+                Color color,
+                int physicsLayer,
+                int damage,
+                bool isPlayer)
+            {
+                Position = position;
+                Velocity = velocity;
+                Color = color;
+                PhysicsLayer = physicsLayer;
+                Damage = damage;
+                IsPlayer = isPlayer;
+            }
+            
         }
     }
 }

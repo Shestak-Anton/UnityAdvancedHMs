@@ -36,8 +36,8 @@ namespace ShootEmUp
 
         private void FixedUpdate()
         {
-            OnPositionChangedListener?.Invoke(_direction);
-            
+            OnPositionChangedListener?.Invoke(_direction * Time.fixedDeltaTime);
+
             if (!_isShootPressed) return;
             _isShootPressed = false;
             OnShootListener?.Invoke();

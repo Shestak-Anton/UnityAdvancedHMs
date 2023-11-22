@@ -4,10 +4,9 @@ namespace ShootEmUp
 {
     public sealed class WeaponComponent : MonoBehaviour
     {
-
         [SerializeField] private BulletConfig _bulletConfig;
         [SerializeField] private Transform firePoint;
-        
+
         public Vector2 Position => firePoint.position;
         private Quaternion Rotation => firePoint.rotation;
 
@@ -20,15 +19,15 @@ namespace ShootEmUp
 
         public void Shoot()
         {
-            _bulletSystem.FlyBulletByArgs(new BulletSystem.Args
-            {
-                isPlayer = true,
-                physicsLayer = (int)_bulletConfig.physicsLayer,
-                color = _bulletConfig.color,
-                damage = _bulletConfig.damage,
-                position = Position,
-                velocity = Rotation * Vector3.up * _bulletConfig.speed
-            });
+            var args = new BulletSystem.BulletData(
+                isPlayer: true,
+                physicsLayer: (int)_bulletConfig.physicsLayer,
+                color: _bulletConfig.color,
+                damage: _bulletConfig.damage,
+                position: Position,
+                velocity: Rotation * Vector3.up * _bulletConfig.speed
+            );
+            _bulletSystem.FlyBulletByArgs(args);
         }
     }
 }
