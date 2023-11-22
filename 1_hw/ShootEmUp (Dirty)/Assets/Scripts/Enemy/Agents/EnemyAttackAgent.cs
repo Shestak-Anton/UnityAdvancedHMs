@@ -4,51 +4,47 @@ namespace ShootEmUp
 {
     public sealed class EnemyAttackAgent : MonoBehaviour
     {
-        public delegate void FireHandler(GameObject enemy, Vector2 position, Vector2 direction);
-
-        public event FireHandler OnFire;
-
-        [SerializeField] private EnemyMoveAgent moveAgent;
         [SerializeField] private float countdown;
         [SerializeField] private WeaponComponent weaponComponent;
-        [SerializeField] private BulletConfig bulletConfig;
 
-        private GameObject target;
-        private float currentTime;
+        private GameObject _target;
+        private bool _isAttackEnabled;
+
+        private Timer _timer;
+        
+        private void Awake()
+        {
+            _timer = new Timer(countdown, doOnLap: Fire);
+        }
 
         public void SetTarget(GameObject target)
         {
-            this.target = target;
+            _target = target;
         }
 
-        public void Reset()
+        public void EnableAttacking()
         {
-            this.currentTime = this.countdown;
+            _isAttackEnabled = true;
         }
 
         private void FixedUpdate()
         {
-            if (!this.moveAgent.IsReached)
-            {
-                return;
-            }
-            
-            if (!this.target.GetComponent<HitPointsComponent>().IsHitPointsExists())
+            if (!_isAttackEnabled)
             {
                 return;
             }
 
-            this.currentTime -= Time.fixedDeltaTime;
-            if (this.currentTime <= 0)
+            if (!_target.GetComponent<HitPointsComponent>().IsHitPointsExists())
             {
-                this.Fire();
-                this.currentTime += this.countdown;
+                return;
             }
+
+            _timer.InvalidateLeftTime(Time.fixedDeltaTime);
         }
 
         private void Fire()
         {
-            weaponComponent.ShootAtTarget(target.transform.position);
+            weaponComponent.ShootAtTarget(_target.transform.position);
         }
     }
 }
