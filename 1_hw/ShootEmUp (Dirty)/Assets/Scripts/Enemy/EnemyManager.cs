@@ -5,8 +5,9 @@ namespace ShootEmUp
 {
     public sealed class EnemyManager : MonoBehaviour
     {
-        [SerializeField] private EnemyPool enemyPool;
+        [SerializeField] private FixedPool fixedPool;
         [SerializeField] private float spawnTimeInterval = 1;
+        [SerializeField] private EnemyInstaller enemyInstaller;
 
         private readonly HashSet<GameObject> _activeEnemies = new();
         private Timer _timer;
@@ -23,8 +24,9 @@ namespace ShootEmUp
 
         private void TrySpawnEnemy()
         {
-            var enemy = enemyPool.SpawnEnemy();
+            var enemy = fixedPool.Dequeue();
             if (enemy == null) return;
+            enemyInstaller.InstallEnemy(enemy);
             if (_activeEnemies.Add(enemy)) enemy.GetComponent<HitPointsComponent>().OnHpEmpty += OnDestroyed;
         }
 
@@ -32,7 +34,7 @@ namespace ShootEmUp
         {
             if (!_activeEnemies.Remove(enemy)) return;
             enemy.GetComponent<HitPointsComponent>().OnHpEmpty -= OnDestroyed;
-            enemyPool.UnspawnEnemy(enemy);
+            fixedPool.Enqueue(enemy);
         }
     }
 }
