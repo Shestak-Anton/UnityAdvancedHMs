@@ -1,21 +1,16 @@
+using System;
 using UnityEngine;
 
 namespace ShootEmUp
 {
     public sealed class WeaponComponent : MonoBehaviour
     {
+        public event Action<BulletData> OnBulletShootListener;
+
         [SerializeField] private Transform firePoint;
         [SerializeField] private BulletConfig bulletConfig;
 
         private Vector2 Position => firePoint.position;
-        private Quaternion Rotation => firePoint.rotation;
-
-        private BulletSystem _bulletSystem;
-
-        private void Awake()
-        {
-            _bulletSystem = FindObjectOfType<BulletSystem>();
-        }
 
         public void ShootAtTarget(Vector2 target)
         {
@@ -26,7 +21,7 @@ namespace ShootEmUp
         public void Shoot(Vector3 direction)
         {
             var bullet = BulletData.FabricateBulletData(bulletConfig, Position, direction);
-            _bulletSystem.ShootBullet(bullet);
+            OnBulletShootListener?.Invoke(bullet);
         }
     }
 }
