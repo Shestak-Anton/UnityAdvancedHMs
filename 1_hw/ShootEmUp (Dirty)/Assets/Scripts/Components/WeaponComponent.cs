@@ -1,20 +1,27 @@
+using System;
 using UnityEngine;
 
 namespace ShootEmUp
 {
     public sealed class WeaponComponent : MonoBehaviour
     {
-        public Vector2 Position
+        public event Action<BulletData> OnBulletShootListener;
+
+        [SerializeField] private Transform firePoint;
+        [SerializeField] private BulletConfig bulletConfig;
+
+        private Vector2 Position => firePoint.position;
+
+        public void ShootAtTarget(Vector2 target)
         {
-            get { return this.firePoint.position; }
+            var vector = target - Position;
+            Shoot(vector.normalized);
         }
 
-        public Quaternion Rotation
+        public void Shoot(Vector3 direction)
         {
-            get { return this.firePoint.rotation; }
+            var bullet = BulletData.FabricateBulletData(bulletConfig, Position, direction);
+            OnBulletShootListener?.Invoke(bullet);
         }
-
-        [SerializeField]
-        private Transform firePoint;
     }
 }

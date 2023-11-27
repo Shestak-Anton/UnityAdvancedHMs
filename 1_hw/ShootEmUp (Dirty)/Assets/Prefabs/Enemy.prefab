@@ -12,12 +12,14 @@ GameObject:
   - component: {fileID: 7936085547460007407}
   - component: {fileID: 5568771391735819375}
   - component: {fileID: 659620479434099170}
-  - component: {fileID: 5568771391735819379}
   - component: {fileID: 5568771391735819372}
   - component: {fileID: 5568771391735819373}
   - component: {fileID: 5568771391735819374}
   - component: {fileID: 8186052948131603766}
   - component: {fileID: 6896809305229427933}
+  - component: {fileID: 1005247559520965043}
+  - component: {fileID: 1637674027230759634}
+  - component: {fileID: 6069904502763594117}
   m_Layer: 11
   m_Name: Enemy
   m_TagString: Untagged
@@ -130,19 +132,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5568771391735819379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559606060570185700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52112fd3e5414bf991b1d54804cb28f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPlayer: 0
 --- !u!114 &5568771391735819372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 3195880656587174614}
+  bulletConfig: {fileID: 11400000, guid: c734dc4acb82f42029b2f15f4ca32e82, type: 2}
 --- !u!114 &8186052948131603766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveComponent: {fileID: 5568771391735819372}
+  targetPositionRadius: 0.25
 --- !u!114 &6896809305229427933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,9 +199,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba7965842e74a9f89ba3aa66d61da46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponComponent: {fileID: 5568771391735819374}
-  moveAgent: {fileID: 8186052948131603766}
   countdown: 1
+  weaponComponent: {fileID: 5568771391735819374}
+--- !u!114 &1005247559520965043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559606060570185700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4435f285c1741719e695ecfaae5225d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMoveAgent: {fileID: 8186052948131603766}
+  enemyAttackAgent: {fileID: 6896809305229427933}
+--- !u!114 &1637674027230759634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559606060570185700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67be5b5c520346edb486d44b8ed67a8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitPointsComponent: {fileID: 5568771391735819373}
+--- !u!114 &6069904502763594117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559606060570185700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2f49fd4fe744959ab18d886633ce5f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponComponent: {fileID: 5568771391735819374}
 --- !u!1 &2239154907127902911
 GameObject:
   m_ObjectHideFlags: 0

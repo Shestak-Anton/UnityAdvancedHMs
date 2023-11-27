@@ -4,7 +4,7 @@ namespace ShootEmUp
 {
     public sealed class GameManager : MonoBehaviour
     {
-        public void FinishGame()
+        public static void FinishGame()
         {
             Debug.Log("Game over!");
             Time.timeScale = 0;
