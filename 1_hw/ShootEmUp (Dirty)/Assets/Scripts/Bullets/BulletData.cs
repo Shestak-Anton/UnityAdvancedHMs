@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public struct BulletData
+    public readonly struct BulletData
     {
         public readonly Vector2 Position;
         public readonly Vector2 Velocity;

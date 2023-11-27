@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace ShootEmUp
 {
     public sealed class EnemyMoveAgent : MonoBehaviour
     {
-        public event Action DestinationReachedListener;
+        public event Action OnDestinationReachedListener;
 
         [SerializeField] private MoveComponent moveComponent;
         [SerializeField] private float targetPositionRadius = 0.25f;
@@ -31,7 +30,7 @@ namespace ShootEmUp
             if (vector.magnitude <= targetPositionRadius)
             {
                 _isReached = true;
-                DestinationReachedListener?.Invoke();
+                OnDestinationReachedListener?.Invoke();
                 return;
             }
 

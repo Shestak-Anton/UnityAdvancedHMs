@@ -8,14 +8,10 @@ namespace ShootEmUp
     )]
     public sealed class BulletConfig : ScriptableObject
     {
-        [SerializeField] public Team team = Team.None;
-
-        [SerializeField] public PhysicsLayer physicsLayer;
-
-        [SerializeField] public Color color;
-
-        [SerializeField] public int damage;
-
-        [SerializeField] public float speed;
+        public Team team = Team.None;
+        public PhysicsLayer physicsLayer;
+        public Color color;
+        public int damage;
+        public float speed;
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-public class Timer
+public sealed class Timer
 {
     private readonly float _interval;
     private readonly Action _doOnLap;

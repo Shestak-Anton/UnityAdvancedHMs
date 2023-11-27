@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class BulletsShooterSystem : MonoBehaviour
+    public sealed class BulletsShooterSystem : MonoBehaviour
     {
 
         [SerializeField] private BulletPool bulletPool;
@@ -30,8 +30,6 @@ namespace ShootEmUp
 
             bulletComponent.GetComponent<BulletCollisionHandler>().OnBulletCollidedListener -= RemoveBullet;
             bulletComponent.GetComponent<OutOfBoundsHandler>().OnBoundsIntersectListener -= RemoveBullet;
-            // bulletComponent.transform.SetParent(container);
-            // _bulletPool.Enqueue(bulletComponent);
             bulletPool.EnqueueBullet(bulletComponent);
         }
 

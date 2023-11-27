@@ -2,25 +2,23 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class EndGameObserver : MonoBehaviour
+    public sealed class EndGameObserver : MonoBehaviour
     {
-
         [SerializeField] private HitPointsComponent hitPointsComponent;
-        [SerializeField] private GameManager gameManager;
 
         private void OnEnable()
         {
-            hitPointsComponent.OnHpEmpty += FinishGame;
+            hitPointsComponent.OnHpEmptyListener += FinishGame;
         }
 
         private void OnDisable()
         {
-            hitPointsComponent.OnHpEmpty -= FinishGame;
+            hitPointsComponent.OnHpEmptyListener -= FinishGame;
         }
 
-        private void FinishGame(GameObject gameObject)
+        private static void FinishGame(GameObject gameObject)
         {
-            gameManager.FinishGame();
+            GameManager.FinishGame();
         }
     }
 }

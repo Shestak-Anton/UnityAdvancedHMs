@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class OutOfBoundsHandler : MonoBehaviour
+    public sealed class OutOfBoundsHandler : MonoBehaviour
     {
         public event Action<BulletComponent> OnBoundsIntersectListener;
 
@@ -12,7 +12,6 @@ namespace ShootEmUp
 
         private void FixedUpdate()
         {
-            if(LevelBounds == null) return;
             if (!LevelBounds.InBounds(bullet.transform.position))
             {
                 OnBoundsIntersectListener?.Invoke(bullet);

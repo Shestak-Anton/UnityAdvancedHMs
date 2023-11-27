@@ -24,16 +24,15 @@ namespace ShootEmUp
 
         private void TrySpawnEnemy()
         {
-            var enemy = fixedPool.Dequeue();
-            if (enemy == null) return;
+            if (!fixedPool.TryDequeue(out var enemy)) return;
             enemyInstaller.InstallEnemy(enemy);
-            if (_activeEnemies.Add(enemy)) enemy.GetComponent<HitPointsComponent>().OnHpEmpty += OnDestroyed;
+            if (_activeEnemies.Add(enemy)) enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener += OnDestroyed;
         }
 
         private void OnDestroyed(GameObject enemy)
         {
             if (!_activeEnemies.Remove(enemy)) return;
-            enemy.GetComponent<HitPointsComponent>().OnHpEmpty -= OnDestroyed;
+            enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener -= OnDestroyed;
             fixedPool.Enqueue(enemy);
         }
     }

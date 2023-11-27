@@ -16,9 +16,9 @@ namespace ShootEmUp
             FillPool(size);
         }
 
-        public GameObject Dequeue()
+        public bool TryDequeue(out GameObject pooledGameObject)
         {
-            return _pool.TryDequeue(out var go) ? go : null;
+            return _pool.TryDequeue(out pooledGameObject);
         }
 
         public void Enqueue(GameObject go)

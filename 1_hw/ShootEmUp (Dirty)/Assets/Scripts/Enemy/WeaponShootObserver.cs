@@ -2,9 +2,8 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class WeaponShootObserver : MonoBehaviour
+    public sealed class WeaponShootObserver : MonoBehaviour
     {
-
         [SerializeField] private WeaponComponent weaponComponent;
 
         private BulletsShooterSystem _bulletsShooterSystem;

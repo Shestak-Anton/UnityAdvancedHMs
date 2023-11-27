@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class BulletCollisionHandler : MonoBehaviour
+    public sealed class BulletCollisionHandler : MonoBehaviour
     {
         public event Action<BulletComponent> OnBulletCollidedListener;
 

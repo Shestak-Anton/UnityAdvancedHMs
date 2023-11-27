@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class DamageDealerComponent : MonoBehaviour
+    public sealed class DamageDealerComponent : MonoBehaviour
     {
         [SerializeField] private HitPointsComponent hitPointsComponent;
 

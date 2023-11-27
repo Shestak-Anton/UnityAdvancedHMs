@@ -8,7 +8,7 @@ namespace ShootEmUp
         bool ShouldShoot();
     }
 
-    public class KeyboardInputManager : IInputManager
+    public sealed class KeyboardInputManager : IInputManager
     {
         public Vector2 HandlePositionChangeInput()
         {

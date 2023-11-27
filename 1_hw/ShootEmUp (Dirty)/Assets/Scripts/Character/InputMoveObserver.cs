@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class InputMoveObserver : MonoBehaviour
+    public sealed class InputMoveObserver : MonoBehaviour
     {
         [SerializeField] private MoveComponent moveComponent;
         [SerializeField] private InputManager inputManager;

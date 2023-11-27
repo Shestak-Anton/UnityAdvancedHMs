@@ -9,7 +9,6 @@ namespace ShootEmUp
         public event Action OnShootListener;
 
         private IInputManager _inputManager;
-
         private Vector2 _direction = Vector2.zero;
         private bool _isShootPressed;
 
@@ -27,20 +26,15 @@ namespace ShootEmUp
         private void HandleMoveInput()
         {
             _direction = _inputManager.HandlePositionChangeInput();
+            OnPositionChangedListener?.Invoke(_direction * Time.fixedDeltaTime);
         }
 
         private void HandleShootInput()
         {
-            if (_inputManager.ShouldShoot()) _isShootPressed = true;
-        }
-
-        private void FixedUpdate()
-        {
-            OnPositionChangedListener?.Invoke(_direction * Time.fixedDeltaTime);
-
-            if (!_isShootPressed) return;
-            _isShootPressed = false;
-            OnShootListener?.Invoke();
+            if (_inputManager.ShouldShoot())
+            {
+                OnShootListener?.Invoke();
+            }
         }
     }
 }

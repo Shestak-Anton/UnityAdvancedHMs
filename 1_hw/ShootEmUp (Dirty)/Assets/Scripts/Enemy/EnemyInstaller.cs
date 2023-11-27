@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class EnemyInstaller : MonoBehaviour
+    public sealed class EnemyInstaller : MonoBehaviour
     {
         [SerializeField] private EnemyPositions enemyPositions;
         [SerializeField] private GameObject attackTarget;
