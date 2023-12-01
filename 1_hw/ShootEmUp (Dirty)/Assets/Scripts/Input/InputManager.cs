@@ -1,9 +1,10 @@
 using System;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class InputManager : MonoBehaviour
+    public sealed class InputManager : MonoBehaviour, ILifeCycle.IUpdateListener
     {
         public event Action<Vector2> OnPositionChangedListener;
         public event Action OnShootListener;
@@ -16,8 +17,8 @@ namespace ShootEmUp
         {
             _inputManager = new KeyboardInputManager();
         }
-
-        private void Update()
+        
+        void ILifeCycle.IUpdateListener.OnUpdate()
         {
             HandleShootInput();
             HandleMoveInput();
@@ -36,5 +37,6 @@ namespace ShootEmUp
                 OnShootListener?.Invoke();
             }
         }
+      
     }
 }

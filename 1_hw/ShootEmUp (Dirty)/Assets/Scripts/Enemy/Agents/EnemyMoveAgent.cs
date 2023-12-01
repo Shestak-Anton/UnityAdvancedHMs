@@ -1,9 +1,10 @@
 using System;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyMoveAgent : MonoBehaviour
+    public sealed class EnemyMoveAgent : MonoBehaviour, ILifeCycle.IFixedUpdateListener
     {
         public event Action OnDestinationReachedListener;
 
@@ -19,7 +20,7 @@ namespace ShootEmUp
             _isReached = false;
         }
 
-        private void FixedUpdate()
+        public void OnFixedUpdate(float deltaTime)
         {
             if (_isReached)
             {
@@ -34,7 +35,7 @@ namespace ShootEmUp
                 return;
             }
 
-            var direction = vector.normalized * Time.fixedDeltaTime;
+            var direction = vector.normalized * deltaTime;
             moveComponent.MoveByRigidbodyVelocity(direction);
         }
     }

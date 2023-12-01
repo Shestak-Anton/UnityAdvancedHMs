@@ -1254,6 +1254,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3951702117947426122}
+  - component: {fileID: 3951702117947426126}
+  - component: {fileID: 3951702117947426125}
   - component: {fileID: 3951702117947426123}
   - component: {fileID: 3951702117947426124}
   m_Layer: 0
@@ -1307,7 +1309,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPointsComponent: {fileID: 4414282821800802401}
-  gameManager: {fileID: 3951702117947426123}
+--- !u!114 &3951702117947426125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3951702117947426121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ddc7ffbda6242a4b759cd8ebb3f4f43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3951702117947426126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3951702117947426121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cc33706f7474d828746fd15991f6231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameLoopManager: {fileID: 3951702117947426125}
+  _enemyManager: {fileID: 562298205}
+  _bulletsShooterSystem: {fileID: 363245578}
 --- !u!212 &4162873433806880330
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1424,10 +1452,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5377a5d4caa94482972174d0a74ac4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_params:
-    m_startPositionY: 19
-    m_endPositionY: -38
-    m_movingSpeedY: 5
+  _params:
+    _startPositionY: 0
+    _endPositionY: 0
+    _movingSpeedY: 0
 --- !u!1 &4914023371208914563
 GameObject:
   m_ObjectHideFlags: 0

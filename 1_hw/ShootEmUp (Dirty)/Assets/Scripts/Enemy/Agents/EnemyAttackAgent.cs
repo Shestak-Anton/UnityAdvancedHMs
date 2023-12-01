@@ -1,8 +1,9 @@
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour
+    public sealed class EnemyAttackAgent : MonoBehaviour, ILifeCycle.IFixedUpdateListener
     {
         [SerializeField] private float countdown;
         [SerializeField] private WeaponComponent weaponComponent;
@@ -27,7 +28,12 @@ namespace ShootEmUp
             _isAttackEnabled = true;
         }
 
-        private void FixedUpdate()
+        private void Fire()
+        {
+            weaponComponent.ShootAtTarget(_target.transform.position);
+        }
+
+        public void OnFixedUpdate(float deltaTime)
         {
             if (!_isAttackEnabled)
             {
@@ -39,12 +45,7 @@ namespace ShootEmUp
                 return;
             }
 
-            _timer.InvalidateLeftTime(Time.fixedDeltaTime);
-        }
-
-        private void Fire()
-        {
-            weaponComponent.ShootAtTarget(_target.transform.position);
+            _timer.InvalidateLeftTime(deltaTime);
         }
     }
 }
