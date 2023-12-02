@@ -1,40 +1,33 @@
-using UnityEngine;
 
 namespace LifeCycle
 {
     public sealed class GlobalLifeCycleManager
     {
-        private LifeCycleState _currentState = LifeCycleState.NONE;
         private readonly LifeCycleComponentsRegistry _lifeCycleComponentsRegistry = new();
 
-        public void ApplyLifecycleState(LifeCycleState lifeCycleState)
+        public void PerformCreation()
         {
-            ValidateState(lifeCycleState);
-            _currentState = lifeCycleState;
-            switch (lifeCycleState)
-            {
-                case LifeCycleState.CREATE:
-                    _lifeCycleComponentsRegistry.PerformCreation();
-                    break;
-                case LifeCycleState.ENABLED:
-                    _lifeCycleComponentsRegistry.PerformResume();
-                    break;
-                case LifeCycleState.DISABLED:
-                    _lifeCycleComponentsRegistry.PerformPause();
-                    break;
-            }
+            _lifeCycleComponentsRegistry.PerformCreation();
+        }
+
+        public void PerformEnable()
+        {
+            _lifeCycleComponentsRegistry.PerformEnable();
         }
 
         public void PerformUpdate()
         {
-            if (_currentState != LifeCycleState.ENABLED) return;
             _lifeCycleComponentsRegistry.PerformUpdate();
         }
 
         public void PerformFixedUpdate(float fixedDeltaTime)
         {
-            if (_currentState != LifeCycleState.ENABLED) return;
             _lifeCycleComponentsRegistry.PerformFixedUpdate(fixedDeltaTime);
+        }
+
+        public void PerformDisable()
+        {
+            _lifeCycleComponentsRegistry.PerformDisable();
         }
 
         public void AddComponent(ILifeCycle listener)
@@ -91,24 +84,6 @@ namespace LifeCycle
             {
                 _lifeCycleComponentsRegistry.Remove(updateListener);
             }
-        }
-
-        private void ValidateState(LifeCycleState newState)
-        {
-            if (IsStateValid(newState))
-            {
-                LogErrorState(_currentState, newState);
-            }
-        }
-
-        private static bool IsStateValid(LifeCycleState lifeCycleState)
-        {
-            return lifeCycleState is LifeCycleState.NONE;
-        }
-
-        private static void LogErrorState(LifeCycleState currentState, LifeCycleState newState)
-        {
-            Debug.LogError($"Invalid state. Current: {currentState}, New (Wrong): {newState}");
         }
     }
 }

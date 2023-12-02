@@ -18,7 +18,7 @@ namespace LifeCycle
             }
         }
 
-        public void PerformResume()
+        public void PerformEnable()
         {
             foreach (var resumableComponent in _resumableComponents)
             {
@@ -26,7 +26,7 @@ namespace LifeCycle
             }
         }
 
-        public void PerformPause()
+        public void PerformDisable()
         {
             foreach (var pausableComponent in _pausableComponents)
             {

@@ -26,23 +26,5 @@ namespace LifeCycle
         {
             void OnDisable();
         }
-
-        interface IGameEvent : ILifeCycle
-        {
-            public interface IGamePausedListener : IGameEvent
-            {
-                void OnGamePaused();
-            }
-
-            public interface IGameStartedListener : IGameEvent
-            {
-                void OnStartGame();
-            }
-
-            public interface IGameLooseListener : IGameEvent
-            {
-                void OnGameLoosed();
-            }
-        }
     }
 }

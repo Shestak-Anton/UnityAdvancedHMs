@@ -1,10 +1,16 @@
+using GameLoop;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class GameManager : MonoBehaviour
+    public sealed class GameManager : MonoBehaviour, IGameEvent.IEndGameListener
     {
-        public static void FinishGame()
+        public void OnGameLoosed()
+        {
+            FinishGame();
+        }
+
+        private static void FinishGame()
         {
             Debug.Log("Game over!");
             Time.timeScale = 0;

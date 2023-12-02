@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameLoop
 {
-    public class GameLifeCycleManager : MonoBehaviour
+    public class GameLifeCycleService : MonoBehaviour
     {
         private GlobalLifeCycleManager _lifeCycleManager;
 
@@ -13,7 +13,6 @@ namespace GameLoop
 
             foreach (var rootGameObject in gameObject.scene.GetRootGameObjects())
             {
-                print(rootGameObject.name);
                 foreach (var lifeCycle in rootGameObject.GetComponentsInChildren<ILifeCycle>())
                 {
                     Register(lifeCycle);
@@ -21,12 +20,12 @@ namespace GameLoop
             }
 
 
-            _lifeCycleManager.ApplyLifecycleState(LifeCycleState.CREATE);
+            _lifeCycleManager.PerformCreation();
         }
 
         private void OnEnable()
         {
-            _lifeCycleManager.ApplyLifecycleState(LifeCycleState.ENABLED);
+            _lifeCycleManager.PerformEnable();
         }
 
         private void Update()
@@ -41,7 +40,7 @@ namespace GameLoop
 
         private void OnDisable()
         {
-            _lifeCycleManager.ApplyLifecycleState(LifeCycleState.DISABLED);
+            _lifeCycleManager.PerformDisable();
         }
 
         public void OnObjectCreated(GameObject sceneInstance)
