@@ -3,7 +3,8 @@ namespace LifeCycle
     public enum LifeCycleState : byte
     {
         NONE = 0,
-        RESUMED = 5,
-        PAUSED = 10
+        CREATE = 1,
+        ENABLED = 2,
+        DISABLED = 3
     }
 }

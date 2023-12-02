@@ -1,9 +1,12 @@
 using System;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class LevelBackground : MonoBehaviour
+    public sealed class LevelBackground : MonoBehaviour,
+        ILifeCycle.ICreateListener,
+        ILifeCycle.IFixedUpdateListener
     {
         [SerializeField] private Params _params;
 
@@ -14,7 +17,8 @@ namespace ShootEmUp
         private float _positionZ;
         private Transform _myTransform;
 
-        private void Awake()
+
+        void ILifeCycle.ICreateListener.OnCreate()
         {
             _startPositionY = _params._startPositionY;
             _endPositionY = _params._endPositionY;
@@ -25,22 +29,14 @@ namespace ShootEmUp
             _positionZ = position.z;
         }
 
-        private void FixedUpdate()
+        public void OnFixedUpdate(float deltaTime)
         {
             if (_myTransform.position.y <= _endPositionY)
             {
-                _myTransform.position = new Vector3(
-                    _positionX,
-                    _startPositionY,
-                    _positionZ
-                );
+                _myTransform.position = new Vector3(_positionX, _startPositionY, _positionZ);
             }
 
-            _myTransform.position -= new Vector3(
-                _positionX,
-                _movingSpeedY * Time.fixedDeltaTime,
-                _positionZ
-            );
+            _myTransform.position -= new Vector3(_positionX, _movingSpeedY * deltaTime, _positionZ);
         }
 
         [Serializable]

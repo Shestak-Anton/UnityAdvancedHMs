@@ -5,24 +5,21 @@ namespace LifeCycle
     public sealed class GlobalLifeCycleManager
     {
         private LifeCycleState _currentState = LifeCycleState.NONE;
-        private readonly LifeCycleComponentsRegistry _lifeCycleComponentsRegistry;
+        private readonly LifeCycleComponentsRegistry _lifeCycleComponentsRegistry = new();
 
-        public GlobalLifeCycleManager(LifeCycleState initialState)
-        {
-            _lifeCycleComponentsRegistry = new LifeCycleComponentsRegistry();
-            ApplyState(initialState);
-        }
-
-        public void ApplyState(LifeCycleState lifeCycleState)
+        public void ApplyLifecycleState(LifeCycleState lifeCycleState)
         {
             ValidateState(lifeCycleState);
             _currentState = lifeCycleState;
             switch (lifeCycleState)
             {
-                case LifeCycleState.RESUMED:
+                case LifeCycleState.CREATE:
+                    _lifeCycleComponentsRegistry.PerformCreation();
+                    break;
+                case LifeCycleState.ENABLED:
                     _lifeCycleComponentsRegistry.PerformResume();
                     break;
-                case LifeCycleState.PAUSED:
+                case LifeCycleState.DISABLED:
                     _lifeCycleComponentsRegistry.PerformPause();
                     break;
             }
@@ -30,26 +27,31 @@ namespace LifeCycle
 
         public void PerformUpdate()
         {
-            if (_currentState != LifeCycleState.RESUMED) return;
+            if (_currentState != LifeCycleState.ENABLED) return;
             _lifeCycleComponentsRegistry.PerformUpdate();
         }
 
         public void PerformFixedUpdate(float fixedDeltaTime)
         {
-            if (_currentState != LifeCycleState.RESUMED) return;
+            if (_currentState != LifeCycleState.ENABLED) return;
             _lifeCycleComponentsRegistry.PerformFixedUpdate(fixedDeltaTime);
         }
 
         public void AddComponent(ILifeCycle listener)
         {
-            if (listener is ILifeCycle.IPauseListener pauseListener)
+            if (listener is ILifeCycle.ICreateListener createListener)
             {
-                _lifeCycleComponentsRegistry.Register(pauseListener);
+                _lifeCycleComponentsRegistry.Register(createListener);
             }
 
-            if (listener is ILifeCycle.IResumeListener resumeListener)
+            if (listener is ILifeCycle.IDisableListener disableListener)
             {
-                _lifeCycleComponentsRegistry.Register(resumeListener);
+                _lifeCycleComponentsRegistry.Register(disableListener);
+            }
+
+            if (listener is ILifeCycle.IEnableListener enableListener)
+            {
+                _lifeCycleComponentsRegistry.Register(enableListener);
             }
 
             if (listener is ILifeCycle.IFixedUpdateListener fixedUpdateListener)
@@ -65,14 +67,29 @@ namespace LifeCycle
 
         public void RemoveComponent(ILifeCycle listener)
         {
-            if (listener is ILifeCycle.IPauseListener pauseListener)
+            if (listener is ILifeCycle.ICreateListener createListener)
             {
-                _lifeCycleComponentsRegistry.Remove(pauseListener);
+                _lifeCycleComponentsRegistry.Remove(createListener);
             }
 
-            if (listener is ILifeCycle.IResumeListener resumeListener)
+            if (listener is ILifeCycle.IDisableListener disableListener)
             {
-                _lifeCycleComponentsRegistry.Remove(resumeListener);
+                _lifeCycleComponentsRegistry.Remove(disableListener);
+            }
+
+            if (listener is ILifeCycle.IEnableListener enableListener)
+            {
+                _lifeCycleComponentsRegistry.Remove(enableListener);
+            }
+
+            if (listener is ILifeCycle.IFixedUpdateListener fixedUpdateListener)
+            {
+                _lifeCycleComponentsRegistry.Remove(fixedUpdateListener);
+            }
+
+            if (listener is ILifeCycle.IUpdateListener updateListener)
+            {
+                _lifeCycleComponentsRegistry.Remove(updateListener);
             }
         }
 

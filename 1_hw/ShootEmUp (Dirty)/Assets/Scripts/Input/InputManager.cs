@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class InputManager : MonoBehaviour, ILifeCycle.IUpdateListener
+    public sealed class InputManager : MonoBehaviour,
+        ILifeCycle.IUpdateListener,
+        ILifeCycle.ICreateListener
     {
         public event Action<Vector2> OnPositionChangedListener;
         public event Action OnShootListener;
@@ -13,11 +15,11 @@ namespace ShootEmUp
         private Vector2 _direction = Vector2.zero;
         private bool _isShootPressed;
 
-        private void Awake()
+        void ILifeCycle.ICreateListener.OnCreate()
         {
             _inputManager = new KeyboardInputManager();
         }
-        
+
         void ILifeCycle.IUpdateListener.OnUpdate()
         {
             HandleShootInput();
@@ -37,6 +39,5 @@ namespace ShootEmUp
                 OnShootListener?.Invoke();
             }
         }
-      
     }
 }

@@ -1,24 +1,28 @@
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class WeaponShootObserver : MonoBehaviour
+    public sealed class WeaponShootObserver : MonoBehaviour,
+        ILifeCycle.ICreateListener,
+        ILifeCycle.IEnableListener,
+        ILifeCycle.IDisableListener
     {
         [SerializeField] private WeaponComponent weaponComponent;
 
         private BulletsShooterSystem _bulletsShooterSystem;
 
-        private void Awake()
+        void ILifeCycle.ICreateListener.OnCreate()
         {
             _bulletsShooterSystem = FindObjectOfType<BulletsShooterSystem>();
         }
 
-        private void OnEnable()
+        void ILifeCycle.IEnableListener.OnEnable()
         {
             weaponComponent.OnBulletShootListener += _bulletsShooterSystem.ShootBullet;
         }
 
-        private void OnDisable()
+        void ILifeCycle.IDisableListener.OnDisable()
         {
             weaponComponent.OnBulletShootListener -= _bulletsShooterSystem.ShootBullet;
         }

@@ -5,7 +5,9 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyManager : MonoBehaviour, ILifeCycle.IFixedUpdateListener
+    public sealed class EnemyManager : MonoBehaviour,
+        ILifeCycle.IFixedUpdateListener,
+        ILifeCycle.ICreateListener
     {
         public event Action<GameObject> OnNewEnemyAddedListener;
         public event Action<GameObject> OnEnemyRemovedListener;
@@ -17,9 +19,14 @@ namespace ShootEmUp
         private readonly HashSet<GameObject> _activeEnemies = new();
         private Timer _timer;
 
-        private void Awake()
+        void ILifeCycle.ICreateListener.OnCreate()
         {
             _timer = new Timer(spawnTimeInterval, doOnLap: TrySpawnEnemy);
+        }
+
+        void ILifeCycle.IFixedUpdateListener.OnFixedUpdate(float deltaTime)
+        {
+            _timer.InvalidateLeftTime(Time.fixedDeltaTime);
         }
 
         private void TrySpawnEnemy()
@@ -43,11 +50,6 @@ namespace ShootEmUp
             OnEnemyRemovedListener?.Invoke(enemy);
             enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener -= OnDestroyed;
             fixedPool.Enqueue(enemy);
-        }
-
-        public void OnFixedUpdate(float deltaTime)
-        {
-            _timer.InvalidateLeftTime(Time.fixedDeltaTime);
         }
     }
 }

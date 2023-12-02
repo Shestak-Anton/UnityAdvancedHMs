@@ -3,7 +3,9 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour, ILifeCycle.IFixedUpdateListener
+    public sealed class EnemyAttackAgent : MonoBehaviour,
+        ILifeCycle.IFixedUpdateListener,
+        ILifeCycle.ICreateListener
     {
         [SerializeField] private float countdown;
         [SerializeField] private WeaponComponent weaponComponent;
@@ -12,8 +14,8 @@ namespace ShootEmUp
         private bool _isAttackEnabled;
 
         private Timer _timer;
-        
-        private void Awake()
+
+        void ILifeCycle.ICreateListener.OnCreate()
         {
             _timer = new Timer(countdown, doOnLap: Fire);
         }
@@ -33,7 +35,7 @@ namespace ShootEmUp
             weaponComponent.ShootAtTarget(_target.transform.position);
         }
 
-        public void OnFixedUpdate(float deltaTime)
+        void ILifeCycle.IFixedUpdateListener.OnFixedUpdate(float deltaTime)
         {
             if (!_isAttackEnabled)
             {

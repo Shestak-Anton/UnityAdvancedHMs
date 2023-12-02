@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class BulletPool : MonoBehaviour
+    public sealed class BulletPool : MonoBehaviour, ILifeCycle.ICreateListener
     {
         [SerializeField] private int initialCount = 50;
 
@@ -13,7 +14,7 @@ namespace ShootEmUp
 
         private readonly Queue<BulletComponent> _bulletPool = new();
 
-        private void Awake()
+        void ILifeCycle.ICreateListener.OnCreate()
         {
             FillPool(initialCount);
         }
@@ -40,6 +41,5 @@ namespace ShootEmUp
                 _bulletPool.Enqueue(bullet);
             }
         }
-        
     }
 }

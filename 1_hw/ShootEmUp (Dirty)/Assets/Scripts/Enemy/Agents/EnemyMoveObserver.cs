@@ -1,18 +1,21 @@
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyMoveObserver : MonoBehaviour
+    public sealed class EnemyMoveObserver : MonoBehaviour,
+        ILifeCycle.IEnableListener,
+        ILifeCycle.IDisableListener
     {
         [SerializeField] private EnemyMoveAgent enemyMoveAgent;
         [SerializeField] private EnemyAttackAgent enemyAttackAgent;
 
-        private void OnEnable()
+        void ILifeCycle.IEnableListener.OnEnable()
         {
             enemyMoveAgent.OnDestinationReachedListener += enemyAttackAgent.EnableAttacking;
         }
 
-        private void OnDisable()
+        void ILifeCycle.IDisableListener.OnDisable()
         {
             enemyMoveAgent.OnDestinationReachedListener -= enemyAttackAgent.EnableAttacking;
         }

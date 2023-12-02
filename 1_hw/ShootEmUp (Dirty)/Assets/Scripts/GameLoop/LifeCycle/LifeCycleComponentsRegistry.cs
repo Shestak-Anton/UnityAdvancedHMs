@@ -4,16 +4,25 @@ namespace LifeCycle
 {
     internal sealed class LifeCycleComponentsRegistry
     {
-        private List<ILifeCycle.IResumeListener> _resumableComponents = new();
-        private List<ILifeCycle.IPauseListener> _pausableComponents = new();
+        private List<ILifeCycle.ICreateListener> _creatableComponents = new();
+        private List<ILifeCycle.IEnableListener> _resumableComponents = new();
+        private List<ILifeCycle.IDisableListener> _pausableComponents = new();
         private List<ILifeCycle.IUpdateListener> _updaterComponents = new();
         private List<ILifeCycle.IFixedUpdateListener> _fixedUpdaterComponents = new();
+
+        public void PerformCreation()
+        {
+            foreach (var creatableComponent in _creatableComponents)
+            {
+                creatableComponent.OnCreate();
+            }
+        }
 
         public void PerformResume()
         {
             foreach (var resumableComponent in _resumableComponents)
             {
-                resumableComponent.OnResume();
+                resumableComponent.OnEnable();
             }
         }
 
@@ -21,7 +30,7 @@ namespace LifeCycle
         {
             foreach (var pausableComponent in _pausableComponents)
             {
-                pausableComponent.OnPause();
+                pausableComponent.OnDisable();
             }
         }
 
@@ -41,7 +50,7 @@ namespace LifeCycle
             }
         }
 
-        public void Register(ILifeCycle.IResumeListener listener)
+        public void Register(ILifeCycle.IEnableListener listener)
         {
             _resumableComponents.Add(listener);
         }
@@ -56,19 +65,40 @@ namespace LifeCycle
             _updaterComponents.Add(listener);
         }
 
-        public void Register(ILifeCycle.IPauseListener listener)
+        public void Register(ILifeCycle.IDisableListener listener)
         {
             _pausableComponents.Add(listener);
         }
 
-        public void Remove(ILifeCycle.IResumeListener listener)
+        public void Register(ILifeCycle.ICreateListener listener)
+        {
+            _creatableComponents.Add(listener);
+        }
+
+        public void Remove(ILifeCycle.IEnableListener listener)
         {
             _resumableComponents.Remove(listener);
         }
 
-        public void Remove(ILifeCycle.IPauseListener listener)
+        public void Remove(ILifeCycle.IFixedUpdateListener listener)
+        {
+            _fixedUpdaterComponents.Remove(listener);
+        }
+
+        public void Remove(ILifeCycle.IUpdateListener listener)
+        {
+            _updaterComponents.Remove(listener);
+        }
+
+        public void Remove(ILifeCycle.IDisableListener listener)
         {
             _pausableComponents.Remove(listener);
         }
+
+        public void Remove(ILifeCycle.ICreateListener listener)
+        {
+            _creatableComponents.Remove(listener);
+        }
+        
     }
 }

@@ -1333,7 +1333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc33706f7474d828746fd15991f6231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameLoopManager: {fileID: 3951702117947426125}
+  _gameLifeCycleManager: {fileID: 3951702117947426125}
   _enemyManager: {fileID: 562298205}
   _bulletsShooterSystem: {fileID: 363245578}
 --- !u!212 &4162873433806880330

@@ -20,7 +20,7 @@ namespace ShootEmUp
             _isReached = false;
         }
 
-        public void OnFixedUpdate(float deltaTime)
+        void ILifeCycle.IFixedUpdateListener.OnFixedUpdate(float deltaTime)
         {
             if (_isReached)
             {

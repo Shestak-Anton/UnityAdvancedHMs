@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class FixedPool : MonoBehaviour
+    public sealed class FixedPool : MonoBehaviour, ILifeCycle.ICreateListener
     {
         [SerializeField] private Transform container;
         [SerializeField] private GameObject prefab;
@@ -11,7 +12,7 @@ namespace ShootEmUp
 
         private readonly Queue<GameObject> _pool = new();
 
-        private void Awake()
+        void ILifeCycle.ICreateListener.OnCreate()
         {
             FillPool(size);
         }
