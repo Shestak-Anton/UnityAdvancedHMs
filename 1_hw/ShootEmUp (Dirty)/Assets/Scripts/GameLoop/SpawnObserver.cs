@@ -1,10 +1,12 @@
+using LifeCycle;
 using ShootEmUp;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace GameLoop
 {
-    public sealed class SpawnObserver : MonoBehaviour
+    public sealed class SpawnObserver : MonoBehaviour,
+        ILifeCycle.IEnableListener,
+        ILifeCycle.IDisableListener
     {
         [SerializeField] private GameLifeCycleService _gameLifeCycleService;
         [SerializeField] private GameStateService _gameStateService;
@@ -12,35 +14,35 @@ namespace GameLoop
         [SerializeField] private EnemyManager _enemyManager;
         [SerializeField] private BulletsShooterSystem _bulletsShooterSystem;
 
-        private void OnEnable()
+        void ILifeCycle.IEnableListener.OnEnable()
         {
-            _enemyManager.OnNewEnemyAddedListener += _gameLifeCycleService.OnObjectCreated;
-            _enemyManager.OnEnemyRemovedListener += _gameLifeCycleService.OnObjectRemoved;
+            _enemyManager.OnNewEnemyAddedListener += _gameLifeCycleService.AttachToLifecycle;
+            _enemyManager.OnEnemyRemovedListener += _gameLifeCycleService.DetachFromLifeCycle;
 
-            _bulletsShooterSystem.OnNewBulletAddedListener += _gameLifeCycleService.OnObjectCreated;
-            _bulletsShooterSystem.OnBulletRemovedListener += _gameLifeCycleService.OnObjectRemoved;
+            _bulletsShooterSystem.OnNewBulletAddedListener += _gameLifeCycleService.AttachToLifecycle;
+            _bulletsShooterSystem.OnBulletRemovedListener += _gameLifeCycleService.DetachFromLifeCycle;
 
 
-            _enemyManager.OnNewEnemyAddedListener += _gameStateService.OnObjectCreated;
-            _enemyManager.OnEnemyRemovedListener += _gameStateService.OnObjectRemoved;
+            _enemyManager.OnNewEnemyAddedListener += _gameStateService.AttachObject;
+            _enemyManager.OnEnemyRemovedListener += _gameStateService.DetachObject;
 
-            _bulletsShooterSystem.OnNewBulletAddedListener += _gameStateService.OnObjectCreated;
-            _bulletsShooterSystem.OnBulletRemovedListener += _gameStateService.OnObjectRemoved;
+            _bulletsShooterSystem.OnNewBulletAddedListener += _gameStateService.AttachObject;
+            _bulletsShooterSystem.OnBulletRemovedListener += _gameStateService.DetachObject;
         }
 
-        private void OnDisable()
+        void ILifeCycle.IDisableListener.OnDisable()
         {
-            _enemyManager.OnNewEnemyAddedListener -= _gameLifeCycleService.OnObjectCreated;
-            _enemyManager.OnEnemyRemovedListener -= _gameLifeCycleService.OnObjectRemoved;
+            _enemyManager.OnNewEnemyAddedListener -= _gameLifeCycleService.AttachToLifecycle;
+            _enemyManager.OnEnemyRemovedListener -= _gameLifeCycleService.DetachFromLifeCycle;
 
-            _bulletsShooterSystem.OnNewBulletAddedListener -= _gameLifeCycleService.OnObjectCreated;
-            _bulletsShooterSystem.OnBulletRemovedListener -= _gameLifeCycleService.OnObjectRemoved;
+            _bulletsShooterSystem.OnNewBulletAddedListener -= _gameLifeCycleService.AttachToLifecycle;
+            _bulletsShooterSystem.OnBulletRemovedListener -= _gameLifeCycleService.DetachFromLifeCycle;
 
-            _enemyManager.OnNewEnemyAddedListener -= _gameStateService.OnObjectCreated;
-            _enemyManager.OnEnemyRemovedListener -= _gameStateService.OnObjectRemoved;
+            _enemyManager.OnNewEnemyAddedListener -= _gameStateService.AttachObject;
+            _enemyManager.OnEnemyRemovedListener -= _gameStateService.DetachObject;
 
-            _bulletsShooterSystem.OnNewBulletAddedListener -= _gameStateService.OnObjectCreated;
-            _bulletsShooterSystem.OnBulletRemovedListener -= _gameStateService.OnObjectRemoved;
+            _bulletsShooterSystem.OnNewBulletAddedListener -= _gameStateService.AttachObject;
+            _bulletsShooterSystem.OnBulletRemovedListener -= _gameStateService.DetachObject;
         }
     }
 }

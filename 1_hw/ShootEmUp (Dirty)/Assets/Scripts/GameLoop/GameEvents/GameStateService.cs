@@ -1,13 +1,13 @@
-using LifeCycle;
+using DefaultNamespace;
 using UnityEngine;
 
 namespace GameLoop
 {
-    public class GameStateService : MonoBehaviour, ILifeCycle.ICreateListener
+    public class GameStateService : MonoBehaviour, IServiceInstaller
     {
         private GameStateManager _gameStateManager;
 
-        void ILifeCycle.ICreateListener.OnCreate()
+        void IServiceInstaller.Install()
         {
             _gameStateManager = new GameStateManager();
 
@@ -25,7 +25,7 @@ namespace GameLoop
             _gameStateManager.ApplyState(gameState);
         }
 
-        public void OnObjectCreated(GameObject sceneInstance)
+        public void AttachObject(GameObject sceneInstance)
         {
             foreach (var gameEvent in sceneInstance.GetComponentsInChildren<IGameEvent>())
             {
@@ -33,7 +33,7 @@ namespace GameLoop
             }
         }
 
-        public void OnObjectRemoved(GameObject sceneInstance)
+        public void DetachObject(GameObject sceneInstance)
         {
             foreach (var gameEvent in sceneInstance.GetComponentsInChildren<IGameEvent>())
             {

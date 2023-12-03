@@ -1,13 +1,14 @@
+using DefaultNamespace;
 using LifeCycle;
 using UnityEngine;
 
 namespace GameLoop
 {
-    public class GameLifeCycleService : MonoBehaviour
+    public class GameLifeCycleService : MonoBehaviour, IServiceInstaller
     {
         private GlobalLifeCycleManager _lifeCycleManager;
 
-        private void Awake()
+        void IServiceInstaller.Install()
         {
             _lifeCycleManager = new GlobalLifeCycleManager();
 
@@ -19,12 +20,7 @@ namespace GameLoop
                 }
             }
 
-
             _lifeCycleManager.PerformCreation();
-        }
-
-        private void OnEnable()
-        {
             _lifeCycleManager.PerformEnable();
         }
 
@@ -38,12 +34,7 @@ namespace GameLoop
             _lifeCycleManager.PerformFixedUpdate(Time.deltaTime);
         }
 
-        private void OnDisable()
-        {
-            _lifeCycleManager.PerformDisable();
-        }
-
-        public void OnObjectCreated(GameObject sceneInstance)
+        public void AttachToLifecycle(GameObject sceneInstance)
         {
             foreach (var lifeCycle in sceneInstance.GetComponentsInChildren<ILifeCycle>())
             {
@@ -61,10 +52,15 @@ namespace GameLoop
             }
         }
 
-        public void OnObjectRemoved(GameObject sceneInstance)
+        public void DetachFromLifeCycle(GameObject sceneInstance)
         {
             foreach (var lifeCycle in sceneInstance.GetComponentsInChildren<ILifeCycle>())
             {
+                if (lifeCycle is ILifeCycle.IDisableListener disableListener)
+                {
+                    disableListener.OnDisable();
+                }
+
                 Unregister(lifeCycle);
             }
         }
