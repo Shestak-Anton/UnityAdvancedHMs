@@ -1,4 +1,5 @@
 using System;
+using GameLoop;
 using LifeCycle;
 using UnityEngine;
 
@@ -6,7 +7,10 @@ namespace ShootEmUp
 {
     public sealed class InputManager : MonoBehaviour,
         ILifeCycle.IUpdateListener,
-        ILifeCycle.ICreateListener
+        ILifeCycle.ICreateListener,
+        IGameEvent.IEndGameListener,
+        IGameEvent.IPauseGameListener,
+        IGameEvent.IStartGameListener
     {
         public event Action<Vector2> OnPositionChangedListener;
         public event Action OnShootListener;
@@ -14,6 +18,7 @@ namespace ShootEmUp
         private IInputManager _inputManager;
         private Vector2 _direction = Vector2.zero;
         private bool _isShootPressed;
+        private bool _isInputActive;
 
         void ILifeCycle.ICreateListener.OnCreate()
         {
@@ -22,6 +27,7 @@ namespace ShootEmUp
 
         void ILifeCycle.IUpdateListener.OnUpdate()
         {
+            if (!_isInputActive) return;
             HandleShootInput();
             HandleMoveInput();
         }
@@ -38,6 +44,21 @@ namespace ShootEmUp
             {
                 OnShootListener?.Invoke();
             }
+        }
+
+        public void OnEndGame()
+        {
+            _isInputActive = false;
+        }
+
+        public void OnGamePaused()
+        {
+            _isInputActive = false;
+        }
+
+        public void OnGameStarted()
+        {
+            _isInputActive = true;
         }
     }
 }

@@ -5,6 +5,8 @@ namespace GameLoop
 {
     public class GameStateService : MonoBehaviour, IServiceInstaller
     {
+        [SerializeField] private GameState _gameState = GameState.Pause;
+
         private GameStateManager _gameStateManager;
 
         void IServiceInstaller.Install()
@@ -18,10 +20,13 @@ namespace GameLoop
                     _gameStateManager.Register(gameEvent);
                 }
             }
+
+            _gameStateManager.ApplyState(_gameState);
         }
 
         public void ApplyState(GameState gameState)
         {
+            _gameState = gameState;
             _gameStateManager.ApplyState(gameState);
         }
 
@@ -32,13 +37,6 @@ namespace GameLoop
                 _gameStateManager.Register(gameEvent);
             }
         }
-
-        public void DetachObject(GameObject sceneInstance)
-        {
-            foreach (var gameEvent in sceneInstance.GetComponentsInChildren<IGameEvent>())
-            {
-                _gameStateManager.Unregister(gameEvent);
-            }
-        }
+        
     }
 }

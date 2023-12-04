@@ -4,14 +4,25 @@ public sealed class Timer
 {
     private readonly float _interval;
     private readonly Action _doOnLap;
-    
+
+    private bool _isStarted;
+    private float _lastSpawnTimeLeft;
+
     public Timer(float interval, Action doOnLap)
     {
         _interval = interval;
         _doOnLap = doOnLap;
     }
 
-    private float _lastSpawnTimeLeft;
+    public void Start()
+    {
+        _isStarted = true;
+    }
+
+    public void Stop()
+    {
+        _isStarted = false;
+    }
 
     private bool IsTimerExpired()
     {
@@ -25,6 +36,7 @@ public sealed class Timer
 
     public void InvalidateLeftTime(float tick)
     {
+        if (!_isStarted) return;
         _lastSpawnTimeLeft -= tick;
         if (!IsTimerExpired()) return;
         _doOnLap?.Invoke();

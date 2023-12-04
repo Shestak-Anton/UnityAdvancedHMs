@@ -1,3 +1,4 @@
+using GameLoop;
 using LifeCycle;
 using UnityEngine;
 
@@ -5,7 +6,10 @@ namespace ShootEmUp
 {
     public sealed class EnemyAttackAgent : MonoBehaviour,
         ILifeCycle.IFixedUpdateListener,
-        ILifeCycle.ICreateListener
+        ILifeCycle.ICreateListener,
+        IGameEvent.IStartGameListener,
+        IGameEvent.IPauseGameListener,
+        IGameEvent.IEndGameListener
     {
         [SerializeField] private float countdown;
         [SerializeField] private WeaponComponent weaponComponent;
@@ -20,6 +24,21 @@ namespace ShootEmUp
             _timer = new Timer(countdown, doOnLap: Fire);
         }
 
+        void IGameEvent.IStartGameListener.OnGameStarted()
+        {
+            _timer?.Start();
+        }
+
+        void IGameEvent.IPauseGameListener.OnGamePaused()
+        {
+            _timer?.Stop();
+        }
+
+        void IGameEvent.IEndGameListener.OnEndGame()
+        {
+            _timer?.Stop();
+        }
+
         public void SetTarget(GameObject target)
         {
             _target = target;
@@ -28,6 +47,7 @@ namespace ShootEmUp
         public void EnableAttacking()
         {
             _isAttackEnabled = true;
+            _timer?.Start();
         }
 
         private void Fire()

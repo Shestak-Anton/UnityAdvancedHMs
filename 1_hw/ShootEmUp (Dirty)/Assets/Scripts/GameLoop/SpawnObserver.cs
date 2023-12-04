@@ -24,10 +24,8 @@ namespace GameLoop
 
 
             _enemyManager.OnNewEnemyAddedListener += _gameStateService.AttachObject;
-            _enemyManager.OnEnemyRemovedListener += _gameStateService.DetachObject;
 
             _bulletsShooterSystem.OnNewBulletAddedListener += _gameStateService.AttachObject;
-            _bulletsShooterSystem.OnBulletRemovedListener += _gameStateService.DetachObject;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
@@ -39,10 +37,8 @@ namespace GameLoop
             _bulletsShooterSystem.OnBulletRemovedListener -= _gameLifeCycleService.DetachFromLifeCycle;
 
             _enemyManager.OnNewEnemyAddedListener -= _gameStateService.AttachObject;
-            _enemyManager.OnEnemyRemovedListener -= _gameStateService.DetachObject;
 
             _bulletsShooterSystem.OnNewBulletAddedListener -= _gameStateService.AttachObject;
-            _bulletsShooterSystem.OnBulletRemovedListener -= _gameStateService.DetachObject;
         }
     }
 }

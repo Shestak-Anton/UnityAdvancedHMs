@@ -1,9 +1,13 @@
 using System;
+using GameLoop;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class BulletComponent : MonoBehaviour
+    public sealed class BulletComponent : MonoBehaviour,
+        IGameEvent.IPauseGameListener,
+        IGameEvent.IStartGameListener,
+        IGameEvent.IEndGameListener
     {
         public event Action<BulletComponent, Collision2D> OnCollisionEntered;
 
@@ -26,10 +30,30 @@ namespace ShootEmUp
         private void SetBulletData(BulletData bulletData)
         {
             _bulletData = bulletData;
-            rigidbody2D.velocity = bulletData.Velocity;
             gameObject.layer = bulletData.PhysicsLayer;
             transform.position = bulletData.Position;
             spriteRenderer.color = bulletData.Color;
+            SetVelocity(bulletData.Velocity);
+        }
+
+        private void SetVelocity(Vector2 velocity)
+        {
+            rigidbody2D.velocity = velocity;
+        }
+
+        public void OnGamePaused()
+        {
+            SetVelocity(Vector2.zero);
+        }
+
+        public void OnGameStarted()
+        {
+            SetVelocity(_bulletData.Velocity);
+        }
+
+        void IGameEvent.IEndGameListener.OnEndGame()
+        {
+            SetVelocity(Vector2.zero);
         }
     }
 }

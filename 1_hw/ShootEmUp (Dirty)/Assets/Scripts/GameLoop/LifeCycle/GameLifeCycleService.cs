@@ -7,11 +7,12 @@ namespace GameLoop
     public class GameLifeCycleService : MonoBehaviour, IServiceInstaller
     {
         private GlobalLifeCycleManager _lifeCycleManager;
+        private bool _isInitialized;
 
         void IServiceInstaller.Install()
         {
             _lifeCycleManager = new GlobalLifeCycleManager();
-
+            _isInitialized = true;
             foreach (var rootGameObject in gameObject.scene.GetRootGameObjects())
             {
                 foreach (var lifeCycle in rootGameObject.GetComponentsInChildren<ILifeCycle>())
@@ -26,11 +27,13 @@ namespace GameLoop
 
         private void Update()
         {
+            if (!_isInitialized) return;
             _lifeCycleManager.PerformUpdate();
         }
 
         private void FixedUpdate()
         {
+            if (!_isInitialized) return;
             _lifeCycleManager.PerformFixedUpdate(Time.deltaTime);
         }
 

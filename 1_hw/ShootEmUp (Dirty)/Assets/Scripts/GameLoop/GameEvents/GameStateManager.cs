@@ -33,13 +33,6 @@ namespace GameLoop
         {
             switch (gameState)
             {
-                case GameState.Home:
-                    if (gameEventComponent is IGameEvent.IShowHomeScreenListener homeScreenListener)
-                    {
-                        homeScreenListener.OnHomeShowed();
-                    }
-
-                    break;
                 case GameState.GamePlay:
                     if (gameEventComponent is IGameEvent.IStartGameListener startGameListener)
                     {
@@ -57,7 +50,7 @@ namespace GameLoop
                 case GameState.EndGame:
                     if (gameEventComponent is IGameEvent.IEndGameListener endGameListener)
                     {
-                        endGameListener.OnGameLoosed();
+                        endGameListener.OnEndGame();
                     }
 
                     break;

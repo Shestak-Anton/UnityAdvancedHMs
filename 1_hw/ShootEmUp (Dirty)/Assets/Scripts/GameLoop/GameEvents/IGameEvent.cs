@@ -2,11 +2,6 @@ namespace GameLoop
 {
     public interface IGameEvent
     {
-        public interface IShowHomeScreenListener : IGameEvent
-        {
-            void OnHomeShowed();
-        }
-
         public interface IPauseGameListener : IGameEvent
         {
             void OnGamePaused();
@@ -19,7 +14,7 @@ namespace GameLoop
 
         public interface IEndGameListener : IGameEvent
         {
-            void OnGameLoosed();
+            void OnEndGame();
         }
     }
 }

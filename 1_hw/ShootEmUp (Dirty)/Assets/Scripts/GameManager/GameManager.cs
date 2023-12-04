@@ -3,17 +3,18 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class GameManager : MonoBehaviour, IGameEvent.IEndGameListener
+    public sealed class GameManager : MonoBehaviour,
+        IGameEvent.IEndGameListener,
+        IGameEvent.IStartGameListener
     {
-        public void OnGameLoosed()
+        void IGameEvent.IEndGameListener.OnEndGame()
         {
-            FinishGame();
+            
         }
 
-        private static void FinishGame()
+        public void OnGameStarted()
         {
-            Debug.Log("Game over!");
-            Time.timeScale = 0;
+            
         }
     }
 }
