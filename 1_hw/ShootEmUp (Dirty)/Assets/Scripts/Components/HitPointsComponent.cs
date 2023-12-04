@@ -11,24 +11,24 @@ namespace ShootEmUp
     {
         public event Action<GameObject> OnHpEmptyListener;
 
-        [SerializeField] private int hitPoints;
+        [SerializeField] private int _hitPoints;
 
         private int _initialHitPoints;
         
         public void OnCreate()
         {
-            _initialHitPoints = hitPoints;
+            _initialHitPoints = _hitPoints;
         }
         
         public bool IsHitPointsExists()
         {
-            return hitPoints > 0;
+            return _hitPoints > 0;
         }
 
         public void TakeDamage(int damage)
         {
-            hitPoints -= damage;
-            if (hitPoints <= 0)
+            _hitPoints -= damage;
+            if (_hitPoints <= 0)
             {
                 OnHpEmptyListener?.Invoke(gameObject);
             }
@@ -38,7 +38,7 @@ namespace ShootEmUp
         {
             if (!IsHitPointsExists())
             {
-                hitPoints = _initialHitPoints;
+                _hitPoints = _initialHitPoints;
             }   
         }
 

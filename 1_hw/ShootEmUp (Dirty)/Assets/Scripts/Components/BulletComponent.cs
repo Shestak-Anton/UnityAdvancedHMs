@@ -11,8 +11,8 @@ namespace ShootEmUp
     {
         public event Action<BulletComponent, Collision2D> OnCollisionEntered;
 
-        [SerializeField] private new Rigidbody2D rigidbody2D;
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private new Rigidbody2D _rigidbody2D;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
 
         public BulletData BulletData
         {
@@ -32,21 +32,21 @@ namespace ShootEmUp
             _bulletData = bulletData;
             gameObject.layer = bulletData.PhysicsLayer;
             transform.position = bulletData.Position;
-            spriteRenderer.color = bulletData.Color;
+            _spriteRenderer.color = bulletData.Color;
             SetVelocity(bulletData.Velocity);
         }
 
         private void SetVelocity(Vector2 velocity)
         {
-            rigidbody2D.velocity = velocity;
+            _rigidbody2D.velocity = velocity;
         }
 
-        public void OnGamePaused()
+        void IGameEvent.IPauseGameListener.OnGamePaused()
         {
             SetVelocity(Vector2.zero);
         }
 
-        public void OnGameStarted()
+        void IGameEvent.IStartGameListener.OnGameStarted()
         {
             SetVelocity(_bulletData.Velocity);
         }
