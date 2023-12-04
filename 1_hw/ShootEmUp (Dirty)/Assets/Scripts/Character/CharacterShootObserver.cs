@@ -7,22 +7,22 @@ namespace ShootEmUp
         ILifeCycle.IEnableListener,
         ILifeCycle.IDisableListener
     {
-        [SerializeField] private InputManager inputManager;
-        [SerializeField] private WeaponComponent weaponComponent;
+        [SerializeField] private InputManager _inputManager;
+        [SerializeField] private WeaponComponent _weaponComponent;
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            inputManager.OnShootListener += Shoot;
+            _inputManager.OnShootListener += Shoot;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            inputManager.OnShootListener -= Shoot;
+            _inputManager.OnShootListener -= Shoot;
         }
 
         private void Shoot()
         {
-            weaponComponent.Shoot(direction: Vector3.up);
+            _weaponComponent.Shoot(direction: Vector3.up);
         }
     }
 }

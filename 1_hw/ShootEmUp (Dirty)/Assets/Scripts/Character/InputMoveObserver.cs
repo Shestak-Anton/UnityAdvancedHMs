@@ -7,17 +7,17 @@ namespace ShootEmUp
         ILifeCycle.IEnableListener,
         ILifeCycle.IDisableListener
     {
-        [SerializeField] private MoveComponent moveComponent;
-        [SerializeField] private InputManager inputManager;
+        [SerializeField] private MoveComponent _moveComponent;
+        [SerializeField] private InputManager _inputManager;
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            inputManager.OnPositionChangedListener += moveComponent.MoveByRigidbodyVelocity;
+            _inputManager.OnPositionChangedListener += _moveComponent.MoveByRigidbodyVelocity;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            inputManager.OnPositionChangedListener -= moveComponent.MoveByRigidbodyVelocity;
+            _inputManager.OnPositionChangedListener -= _moveComponent.MoveByRigidbodyVelocity;
         }
     }
 }

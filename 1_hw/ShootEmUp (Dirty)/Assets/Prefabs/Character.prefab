@@ -169,8 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 255e2046cd034fe488068a9cb2cc1c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveComponent: {fileID: 3797660550113467491}
-  inputManager: {fileID: 0}
+  _moveComponent: {fileID: 3797660550113467491}
+  _inputManager: {fileID: 0}
 --- !u!114 &3797660550113467491
 MonoBehaviour:
   m_ObjectHideFlags: 0
