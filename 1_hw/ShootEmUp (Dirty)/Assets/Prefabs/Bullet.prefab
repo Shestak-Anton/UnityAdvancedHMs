@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d3d870e74547ea961bef82d4c89dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 201757604187811891}
+  _bullet: {fileID: 201757604187811891}
 --- !u!114 &-8950066761278065291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,4 +165,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b57b2b957646a3ba9a9a6c3372a4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 201757604187811891}
+  _bullet: {fileID: 201757604187811891}

@@ -39,11 +39,11 @@ namespace ShootEmUp
         {
             return new BulletData(
                 position: position,
-                velocity: rotation * bulletConfig.speed,
-                color: bulletConfig.color,
-                physicsLayer: (int)bulletConfig.physicsLayer,
-                damage: bulletConfig.damage,
-                emitter: bulletConfig.team
+                velocity: rotation * bulletConfig.Speed,
+                color: bulletConfig.Color,
+                physicsLayer: (int)bulletConfig.PhysicsLayer,
+                damage: bulletConfig.Damage,
+                emitter: bulletConfig.Team
             );
         }
     }

@@ -6,30 +6,30 @@ namespace ShootEmUp
 {
     public sealed class BulletPool : MonoBehaviour, ILifeCycle.ICreateListener
     {
-        [SerializeField] private int initialCount = 50;
+        [SerializeField] private int _initialCount = 50;
 
-        [SerializeField] private Transform container;
-        [SerializeField] private BulletComponent prefab;
-        [SerializeField] private Transform worldTransform;
+        [SerializeField] private Transform _container;
+        [SerializeField] private BulletComponent _prefab;
+        [SerializeField] private Transform _worldTransform;
 
         private readonly Queue<BulletComponent> _bulletPool = new();
 
         void ILifeCycle.ICreateListener.OnCreate()
         {
-            FillPool(initialCount);
+            FillPool(_initialCount);
         }
 
         public BulletComponent DequeueBullet(BulletData bulletData)
         {
-            if (!_bulletPool.TryDequeue(out var bullet)) return Instantiate(prefab, worldTransform);
-            bullet.transform.SetParent(worldTransform);
+            if (!_bulletPool.TryDequeue(out var bullet)) return Instantiate(_prefab, _worldTransform);
+            bullet.transform.SetParent(_worldTransform);
             bullet.BulletData = bulletData;
             return bullet;
         }
 
         public void EnqueueBullet(BulletComponent bulletComponent)
         {
-            bulletComponent.transform.SetParent(container);
+            bulletComponent.transform.SetParent(_container);
             _bulletPool.Enqueue(bulletComponent);
         }
 
@@ -37,7 +37,7 @@ namespace ShootEmUp
         {
             for (var i = 0; i < poolSize; i++)
             {
-                var bullet = Instantiate(prefab, container);
+                var bullet = Instantiate(_prefab, _container);
                 _bulletPool.Enqueue(bullet);
             }
         }

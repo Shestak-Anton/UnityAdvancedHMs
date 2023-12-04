@@ -10,16 +10,16 @@ namespace ShootEmUp
     {
         public event Action<BulletComponent> OnBulletCollidedListener;
 
-        [SerializeField] private BulletComponent bullet;
+        [SerializeField] private BulletComponent _bullet;
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            bullet.OnCollisionEntered += OnBulletCollision;
+            _bullet.OnCollisionEntered += OnBulletCollision;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            bullet.OnCollisionEntered -= OnBulletCollision;
+            _bullet.OnCollisionEntered -= OnBulletCollision;
         }
 
         private void OnBulletCollision(BulletComponent bulletComponent, Collision2D collision)

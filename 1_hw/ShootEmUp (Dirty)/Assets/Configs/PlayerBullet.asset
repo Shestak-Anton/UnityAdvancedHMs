@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f607d62c36cf429b98fd5e0d29773f70, type: 3}
   m_Name: PlayerBullet
   m_EditorClassIdentifier: 
-  team: 100
-  physicsLayer: 14
-  color: {r: 0, g: 0.07073355, b: 1, a: 1}
-  damage: 1000
-  speed: 3
+  Team: 10
+  PhysicsLayer: 14
+  Color: {r: 0.4292453, g: 0.6061482, b: 1, a: 1}
+  Damage: 1
+  Speed: 3
