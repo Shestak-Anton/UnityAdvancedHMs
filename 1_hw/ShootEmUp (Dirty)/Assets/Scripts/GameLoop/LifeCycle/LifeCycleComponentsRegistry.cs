@@ -4,15 +4,15 @@ namespace LifeCycle
 {
     internal sealed class LifeCycleComponentsRegistry
     {
-        private List<ILifeCycle.ICreateListener> _creatableComponents = new();
-        private List<ILifeCycle.IEnableListener> _resumableComponents = new();
-        private List<ILifeCycle.IDisableListener> _pausableComponents = new();
-        private List<ILifeCycle.IUpdateListener> _updaterComponents = new();
-        private List<ILifeCycle.IFixedUpdateListener> _fixedUpdaterComponents = new();
+        private readonly List<ILifeCycle.ICreateListener> _creates = new();
+        private readonly List<ILifeCycle.IEnableListener> _enables = new();
+        private readonly List<ILifeCycle.IUpdateListener> _updates = new();
+        private readonly List<ILifeCycle.IFixedUpdateListener> _fixedUpdates = new();
+        private readonly List<ILifeCycle.IDisableListener> _disables = new();
 
         public void PerformCreation()
         {
-            foreach (var creatableComponent in _creatableComponents)
+            foreach (var creatableComponent in _creates)
             {
                 creatableComponent.OnCreate();
             }
@@ -20,85 +20,90 @@ namespace LifeCycle
 
         public void PerformEnable()
         {
-            foreach (var resumableComponent in _resumableComponents)
+            foreach (var component in _enables)
             {
-                resumableComponent.OnEnable();
-            }
-        }
-
-        public void PerformDisable()
-        {
-            foreach (var pausableComponent in _pausableComponents)
-            {
-                pausableComponent.OnDisable();
+                component.OnEnable();
             }
         }
 
         public void PerformFixedUpdate(float fixedDeltaTime)
         {
-            for (int i = 0; i < _fixedUpdaterComponents.Count; i++)
+            for (int i = 0; i < _fixedUpdates.Count; i++)
             {
-                _fixedUpdaterComponents[i].OnFixedUpdate(fixedDeltaTime);
+                _fixedUpdates[i].OnFixedUpdate(fixedDeltaTime);
             }
         }
 
         public void PerformUpdate()
         {
-            for (int i = 0; i < _updaterComponents.Count; i++)
+            for (int i = 0; i < _updates.Count; i++)
             {
-                _updaterComponents[i].OnUpdate();
+                _updates[i].OnUpdate();
             }
         }
 
-        public void Register(ILifeCycle.IEnableListener listener)
+        public void PerformDisable()
         {
-            _resumableComponents.Add(listener);
+            foreach (var disable in _disables)
+            {
+                disable.OnDisable();
+            }
         }
 
-        public void Register(ILifeCycle.IFixedUpdateListener listener)
+        public void AddComponent(ILifeCycle listener)
         {
-            _fixedUpdaterComponents.Add(listener);
+            if (listener is ILifeCycle.ICreateListener createListener)
+            {
+                _creates.Add(createListener);
+            }
+
+            if (listener is ILifeCycle.IDisableListener disableListener)
+            {
+                _disables.Add(disableListener);
+            }
+
+            if (listener is ILifeCycle.IEnableListener enableListener)
+            {
+                _enables.Add(enableListener);
+            }
+
+            if (listener is ILifeCycle.IFixedUpdateListener fixedUpdateListener)
+            {
+                _fixedUpdates.Add(fixedUpdateListener);
+            }
+
+            if (listener is ILifeCycle.IUpdateListener updateListener)
+            {
+                _updates.Add(updateListener);
+            }
         }
 
-        public void Register(ILifeCycle.IUpdateListener listener)
+        public void RemoveComponent(ILifeCycle listener)
         {
-            _updaterComponents.Add(listener);
-        }
+            if (listener is ILifeCycle.ICreateListener createListener)
+            {
+                _creates.Remove(createListener);
+            }
 
-        public void Register(ILifeCycle.IDisableListener listener)
-        {
-            _pausableComponents.Add(listener);
-        }
+            if (listener is ILifeCycle.IDisableListener disableListener)
+            {
+                _disables.Remove(disableListener);
+            }
 
-        public void Register(ILifeCycle.ICreateListener listener)
-        {
-            _creatableComponents.Add(listener);
-        }
+            if (listener is ILifeCycle.IEnableListener enableListener)
+            {
+                _enables.Remove(enableListener);
+            }
 
-        public void Remove(ILifeCycle.IEnableListener listener)
-        {
-            _resumableComponents.Remove(listener);
-        }
+            if (listener is ILifeCycle.IFixedUpdateListener fixedUpdateListener)
+            {
+                _fixedUpdates.Remove(fixedUpdateListener);
+            }
 
-        public void Remove(ILifeCycle.IFixedUpdateListener listener)
-        {
-            _fixedUpdaterComponents.Remove(listener);
+            if (listener is ILifeCycle.IUpdateListener updateListener)
+            {
+                _updates.Remove(updateListener);
+            }
         }
-
-        public void Remove(ILifeCycle.IUpdateListener listener)
-        {
-            _updaterComponents.Remove(listener);
-        }
-
-        public void Remove(ILifeCycle.IDisableListener listener)
-        {
-            _pausableComponents.Remove(listener);
-        }
-
-        public void Remove(ILifeCycle.ICreateListener listener)
-        {
-            _creatableComponents.Remove(listener);
-        }
-        
     }
 }

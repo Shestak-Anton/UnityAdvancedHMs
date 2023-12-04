@@ -24,11 +24,6 @@ namespace GameLoop
             _gameEventComponents.Add(gameEvent);
         }
 
-        public void Unregister(IGameEvent gameEvent)
-        {
-            _gameEventComponents.Remove(gameEvent);
-        }
-
         private void TryTriggerEventByState(IGameEvent gameEventComponent, GameState gameState)
         {
             switch (gameState)

@@ -6,12 +6,12 @@ namespace GameLoop
 {
     public class GameLifeCycleService : MonoBehaviour, IServiceInstaller
     {
-        private GlobalLifeCycleManager _lifeCycleManager;
+        private LifeCycleComponentsRegistry _componentsRegistry;
         private bool _isInitialized;
 
         void IServiceInstaller.Install()
         {
-            _lifeCycleManager = new GlobalLifeCycleManager();
+            _componentsRegistry = new LifeCycleComponentsRegistry();
             _isInitialized = true;
             foreach (var rootGameObject in gameObject.scene.GetRootGameObjects())
             {
@@ -21,20 +21,20 @@ namespace GameLoop
                 }
             }
 
-            _lifeCycleManager.PerformCreation();
-            _lifeCycleManager.PerformEnable();
+            _componentsRegistry.PerformCreation();
+            _componentsRegistry.PerformEnable();
         }
 
         private void Update()
         {
             if (!_isInitialized) return;
-            _lifeCycleManager.PerformUpdate();
+            _componentsRegistry.PerformUpdate();
         }
 
         private void FixedUpdate()
         {
             if (!_isInitialized) return;
-            _lifeCycleManager.PerformFixedUpdate(Time.deltaTime);
+            _componentsRegistry.PerformFixedUpdate(Time.deltaTime);
         }
 
         public void AttachToLifecycle(GameObject sceneInstance)
@@ -70,12 +70,12 @@ namespace GameLoop
 
         private void Register(ILifeCycle lifeCycle)
         {
-            _lifeCycleManager.AddComponent(lifeCycle);
+            _componentsRegistry.AddComponent(lifeCycle);
         }
 
         private void Unregister(ILifeCycle lifeCycle)
         {
-            _lifeCycleManager.RemoveComponent(lifeCycle);
+            _componentsRegistry.RemoveComponent(lifeCycle);
         }
     }
 }
