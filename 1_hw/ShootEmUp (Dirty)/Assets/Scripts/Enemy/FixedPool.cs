@@ -6,15 +6,15 @@ namespace ShootEmUp
 {
     public sealed class FixedPool : MonoBehaviour, ILifeCycle.ICreateListener
     {
-        [SerializeField] private Transform container;
-        [SerializeField] private GameObject prefab;
-        [SerializeField] private int size = 7;
+        [SerializeField] private Transform _container;
+        [SerializeField] private GameObject _prefab;
+        [SerializeField] private int _size = 7;
 
         private readonly Queue<GameObject> _pool = new();
 
         void ILifeCycle.ICreateListener.OnCreate()
         {
-            FillPool(size);
+            FillPool(_size);
         }
 
         public bool TryDequeue(out GameObject pooledGameObject)
@@ -24,7 +24,7 @@ namespace ShootEmUp
 
         public void Enqueue(GameObject go)
         {
-            go.transform.SetParent(container);
+            go.transform.SetParent(_container);
             _pool.Enqueue(go);
         }
 
@@ -32,7 +32,7 @@ namespace ShootEmUp
         {
             for (var i = 0; i < poolSize; i++)
             {
-                var enemy = Instantiate(prefab, container);
+                var enemy = Instantiate(_prefab, _container);
                 _pool.Enqueue(enemy);
             }
         }

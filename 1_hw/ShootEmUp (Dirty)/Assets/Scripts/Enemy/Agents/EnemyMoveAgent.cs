@@ -13,8 +13,8 @@ namespace ShootEmUp
     {
         public event Action OnDestinationReachedListener;
 
-        [SerializeField] private MoveComponent moveComponent;
-        [SerializeField] private float targetPositionRadius = 0.25f;
+        [SerializeField] private MoveComponent _moveComponent;
+        [SerializeField] private float _targetPositionRadius = 0.25f;
 
         private Vector2 _destination;
         private bool _isReached;
@@ -39,7 +39,7 @@ namespace ShootEmUp
             }
 
             var vector = _destination - (Vector2)transform.position;
-            if (vector.magnitude <= targetPositionRadius)
+            if (vector.magnitude <= _targetPositionRadius)
             {
                 _isReached = true;
                 OnDestinationReachedListener?.Invoke();
@@ -47,7 +47,7 @@ namespace ShootEmUp
             }
 
             var direction = vector.normalized * deltaTime;
-            moveComponent.MoveByRigidbodyVelocity(direction);
+            _moveComponent.MoveByRigidbodyVelocity(direction);
         }
 
         void IGameEvent.IPauseGameListener.OnGamePaused()

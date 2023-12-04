@@ -11,8 +11,8 @@ namespace ShootEmUp
         IGameEvent.IPauseGameListener,
         IGameEvent.IEndGameListener
     {
-        [SerializeField] private float countdown;
-        [SerializeField] private WeaponComponent weaponComponent;
+        [SerializeField] private float _countdown;
+        [SerializeField] private WeaponComponent _weaponComponent;
 
         private GameObject _target;
         private bool _isAttackEnabled;
@@ -21,7 +21,7 @@ namespace ShootEmUp
 
         void ILifeCycle.ICreateListener.OnCreate()
         {
-            _timer = new Timer(countdown, doOnLap: Fire);
+            _timer = new Timer(_countdown, doOnLap: Fire);
         }
 
         void IGameEvent.IStartGameListener.OnGameStarted()
@@ -52,7 +52,7 @@ namespace ShootEmUp
 
         private void Fire()
         {
-            weaponComponent.ShootAtTarget(_target.transform.position);
+            _weaponComponent.ShootAtTarget(_target.transform.position);
         }
 
         void ILifeCycle.IFixedUpdateListener.OnFixedUpdate(float deltaTime)

@@ -7,17 +7,17 @@ namespace ShootEmUp
         ILifeCycle.IEnableListener,
         ILifeCycle.IDisableListener
     {
-        [SerializeField] private EnemyMoveAgent enemyMoveAgent;
-        [SerializeField] private EnemyAttackAgent enemyAttackAgent;
+        [SerializeField] private EnemyMoveAgent _enemyMoveAgent;
+        [SerializeField] private EnemyAttackAgent _enemyAttackAgent;
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            enemyMoveAgent.OnDestinationReachedListener += enemyAttackAgent.EnableAttacking;
+            _enemyMoveAgent.OnDestinationReachedListener += _enemyAttackAgent.EnableAttacking;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            enemyMoveAgent.OnDestinationReachedListener -= enemyAttackAgent.EnableAttacking;
+            _enemyMoveAgent.OnDestinationReachedListener -= _enemyAttackAgent.EnableAttacking;
         }
     }
 }

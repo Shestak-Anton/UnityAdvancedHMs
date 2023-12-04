@@ -4,6 +4,7 @@ using System.Linq;
 using GameLoop;
 using LifeCycle;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ShootEmUp
 {
@@ -17,9 +18,9 @@ namespace ShootEmUp
         public event Action<GameObject> OnNewEnemyAddedListener;
         public event Action<GameObject> OnEnemyRemovedListener;
 
-        [SerializeField] private FixedPool fixedPool;
-        [SerializeField] private float spawnTimeInterval = 1;
-        [SerializeField] private EnemyInstaller enemyInstaller;
+        [SerializeField] private FixedPool _fixedPool;
+        [SerializeField] private float _spawnTimeInterval = 1;
+        [SerializeField] private EnemyInstaller _enemyInstaller;
 
         private readonly HashSet<GameObject> _activeEnemies = new();
         private Timer _timer;
@@ -36,7 +37,7 @@ namespace ShootEmUp
 
         void ILifeCycle.ICreateListener.OnCreate()
         {
-            _timer = new Timer(spawnTimeInterval, doOnLap: TrySpawnEnemy);
+            _timer = new Timer(_spawnTimeInterval, doOnLap: TrySpawnEnemy);
         }
 
         void IGameEvent.IEndGameListener.OnEndGame()
@@ -52,8 +53,8 @@ namespace ShootEmUp
 
         private void TrySpawnEnemy()
         {
-            if (!fixedPool.TryDequeue(out var enemy)) return;
-            enemyInstaller.InstallEnemy(enemy);
+            if (!_fixedPool.TryDequeue(out var enemy)) return;
+            _enemyInstaller.InstallEnemy(enemy);
             OnNewEnemyAddedListener?.Invoke(enemy);
             if (_activeEnemies.Add(enemy))
             {
@@ -70,7 +71,7 @@ namespace ShootEmUp
 
             OnEnemyRemovedListener?.Invoke(enemy);
             enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener -= OnDestroyed;
-            fixedPool.Enqueue(enemy);
+            _fixedPool.Enqueue(enemy);
         }
     }
 }

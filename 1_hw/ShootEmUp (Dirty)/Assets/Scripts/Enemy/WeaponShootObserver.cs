@@ -8,7 +8,7 @@ namespace ShootEmUp
         ILifeCycle.IEnableListener,
         ILifeCycle.IDisableListener
     {
-        [SerializeField] private WeaponComponent weaponComponent;
+        [SerializeField] private WeaponComponent _weaponComponent;
 
         private BulletsShooterSystem _bulletsShooterSystem;
 
@@ -19,12 +19,12 @@ namespace ShootEmUp
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            weaponComponent.OnBulletShootListener += _bulletsShooterSystem.ShootBullet;
+            _weaponComponent.OnBulletShootListener += _bulletsShooterSystem.ShootBullet;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            weaponComponent.OnBulletShootListener -= _bulletsShooterSystem.ShootBullet;
+            _weaponComponent.OnBulletShootListener -= _bulletsShooterSystem.ShootBullet;
         }
     }
 }
