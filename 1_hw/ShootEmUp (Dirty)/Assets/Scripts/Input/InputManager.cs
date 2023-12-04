@@ -46,17 +46,17 @@ namespace ShootEmUp
             }
         }
 
-        public void OnEndGame()
+        void IGameEvent.IEndGameListener.OnEndGame()
         {
             _isInputActive = false;
         }
 
-        public void OnGamePaused()
+        void IGameEvent.IPauseGameListener.OnGamePaused()
         {
             _isInputActive = false;
         }
 
-        public void OnGameStarted()
+        void IGameEvent.IStartGameListener.OnGameStarted()
         {
             _isInputActive = true;
         }

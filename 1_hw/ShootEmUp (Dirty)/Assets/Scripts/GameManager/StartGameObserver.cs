@@ -1,20 +1,23 @@
 using GameLoop;
+using LifeCycle;
 using Ui;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class StartGameObserver : MonoBehaviour
+    public class StartGameObserver : MonoBehaviour,
+        ILifeCycle.IEnableListener,
+        ILifeCycle.IDisableListener
     {
         [SerializeField] private PauseScreenComponent _pauseScreen;
         [SerializeField] private GameStateService _gameStateService;
 
-        private void OnEnable()
+        void ILifeCycle.IEnableListener.OnEnable()
         {
             _pauseScreen.OnStartGameListener += StartGame;
         }
 
-        private void OnDisable()
+        void ILifeCycle.IDisableListener.OnDisable()
         {
             _pauseScreen.OnStartGameListener -= StartGame;
         }

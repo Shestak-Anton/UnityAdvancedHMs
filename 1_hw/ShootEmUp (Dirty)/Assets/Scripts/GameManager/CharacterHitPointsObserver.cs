@@ -1,19 +1,22 @@
 using GameLoop;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterHitPointsObserver : MonoBehaviour
+    public sealed class CharacterHitPointsObserver : MonoBehaviour,
+        ILifeCycle.IEnableListener,
+        ILifeCycle.IDisableListener
     {
         [SerializeField] private HitPointsComponent _hitPointsComponent;
         [SerializeField] private GameStateService _gameStateService;
 
-        private void OnEnable()
+        void ILifeCycle.IEnableListener.OnEnable()
         {
             _hitPointsComponent.OnHpEmptyListener += FinishGame;
         }
 
-        private void OnDisable()
+        void ILifeCycle.IDisableListener.OnDisable()
         {
             _hitPointsComponent.OnHpEmptyListener -= FinishGame;
         }
