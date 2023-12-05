@@ -4,11 +4,11 @@ namespace ShootEmUp
 {
     public sealed class DamageDealerComponent : MonoBehaviour
     {
-        [SerializeField] private HitPointsComponent hitPointsComponent;
+        [SerializeField] private HitPointsComponent _hitPointsComponent;
 
         public void DealDamage(int damage)
         {
-            hitPointsComponent.TakeDamage(damage);
+            _hitPointsComponent.TakeDamage(damage);
         }
     }
 }

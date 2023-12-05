@@ -1,39 +1,77 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using GameLoop;
+using LifeCycle;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyManager : MonoBehaviour
+    public sealed class EnemyManager : MonoBehaviour,
+        ILifeCycle.IFixedUpdateListener,
+        ILifeCycle.ICreateListener,
+        IGameEvent.IStartGameListener,
+        IGameEvent.IPauseGameListener,
+        IGameEvent.IEndGameListener
     {
-        [SerializeField] private FixedPool fixedPool;
-        [SerializeField] private float spawnTimeInterval = 1;
-        [SerializeField] private EnemyInstaller enemyInstaller;
+        public event Action<GameObject> OnNewEnemyAddedListener;
+        public event Action<GameObject> OnEnemyRemovedListener;
+
+        [SerializeField] private FixedPool _fixedPool;
+        [SerializeField] private float _spawnTimeInterval = 1;
+        [SerializeField] private EnemyInstaller _enemyInstaller;
 
         private readonly HashSet<GameObject> _activeEnemies = new();
         private Timer _timer;
 
-        private void Awake()
+        void IGameEvent.IStartGameListener.OnGameStarted()
         {
-            _timer = new Timer(spawnTimeInterval, doOnLap: TrySpawnEnemy);
+            _timer?.Start();
         }
 
-        private void FixedUpdate()
+        void IGameEvent.IPauseGameListener.OnGamePaused()
         {
-            _timer.InvalidateLeftTime(Time.fixedDeltaTime);
+            _timer?.Stop();
+        }
+
+        void ILifeCycle.ICreateListener.OnCreate()
+        {
+            _timer = new Timer(_spawnTimeInterval, doOnLap: TrySpawnEnemy);
+        }
+
+        void IGameEvent.IEndGameListener.OnEndGame()
+        {
+            _activeEnemies.ToList().ForEach(OnDestroyed);
+            _timer?.Stop();
+        }
+
+        void ILifeCycle.IFixedUpdateListener.OnFixedUpdate(float deltaTime)
+        {
+            _timer?.InvalidateLeftTime(Time.fixedDeltaTime);
         }
 
         private void TrySpawnEnemy()
         {
-            if (!fixedPool.TryDequeue(out var enemy)) return;
-            enemyInstaller.InstallEnemy(enemy);
-            if (_activeEnemies.Add(enemy)) enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener += OnDestroyed;
+            if (!_fixedPool.TryDequeue(out var enemy)) return;
+            _enemyInstaller.InstallEnemy(enemy);
+            OnNewEnemyAddedListener?.Invoke(enemy);
+            if (_activeEnemies.Add(enemy))
+            {
+                enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener += OnDestroyed;
+            }
         }
 
         private void OnDestroyed(GameObject enemy)
         {
-            if (!_activeEnemies.Remove(enemy)) return;
+            if (!_activeEnemies.Remove(enemy))
+            {
+                return;
+            }
+
+            OnEnemyRemovedListener?.Invoke(enemy);
             enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener -= OnDestroyed;
-            fixedPool.Enqueue(enemy);
+            _fixedPool.Enqueue(enemy);
         }
     }
 }

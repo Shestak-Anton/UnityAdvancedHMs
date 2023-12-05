@@ -1,22 +1,25 @@
 using System;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class BulletCollisionHandler : MonoBehaviour
+    public sealed class BulletCollisionHandler : MonoBehaviour,
+        ILifeCycle.IDisableListener,
+        ILifeCycle.IEnableListener
     {
         public event Action<BulletComponent> OnBulletCollidedListener;
 
-        [SerializeField] private BulletComponent bullet;
+        [SerializeField] private BulletComponent _bullet;
 
-        private void OnEnable()
+        void ILifeCycle.IEnableListener.OnEnable()
         {
-            bullet.OnCollisionEntered += OnBulletCollision;
+            _bullet.OnCollisionEntered += OnBulletCollision;
         }
 
-        private void OnDisable()
+        void ILifeCycle.IDisableListener.OnDisable()
         {
-            bullet.OnCollisionEntered -= OnBulletCollision;
+            _bullet.OnCollisionEntered -= OnBulletCollision;
         }
 
         private void OnBulletCollision(BulletComponent bulletComponent, Collision2D collision)

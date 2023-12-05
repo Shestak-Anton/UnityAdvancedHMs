@@ -1,20 +1,42 @@
+using GameLoop;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour
+    public sealed class EnemyAttackAgent : MonoBehaviour,
+        ILifeCycle.IFixedUpdateListener,
+        ILifeCycle.ICreateListener,
+        IGameEvent.IStartGameListener,
+        IGameEvent.IPauseGameListener,
+        IGameEvent.IEndGameListener
     {
-        [SerializeField] private float countdown;
-        [SerializeField] private WeaponComponent weaponComponent;
+        [SerializeField] private float _countdown;
+        [SerializeField] private WeaponComponent _weaponComponent;
 
         private GameObject _target;
         private bool _isAttackEnabled;
 
         private Timer _timer;
-        
-        private void Awake()
+
+        void ILifeCycle.ICreateListener.OnCreate()
         {
-            _timer = new Timer(countdown, doOnLap: Fire);
+            _timer = new Timer(_countdown, doOnLap: Fire);
+        }
+
+        void IGameEvent.IStartGameListener.OnGameStarted()
+        {
+            _timer?.Start();
+        }
+
+        void IGameEvent.IPauseGameListener.OnGamePaused()
+        {
+            _timer?.Stop();
+        }
+
+        void IGameEvent.IEndGameListener.OnEndGame()
+        {
+            _timer?.Stop();
         }
 
         public void SetTarget(GameObject target)
@@ -25,9 +47,15 @@ namespace ShootEmUp
         public void EnableAttacking()
         {
             _isAttackEnabled = true;
+            _timer?.Start();
         }
 
-        private void FixedUpdate()
+        private void Fire()
+        {
+            _weaponComponent.ShootAtTarget(_target.transform.position);
+        }
+
+        void ILifeCycle.IFixedUpdateListener.OnFixedUpdate(float deltaTime)
         {
             if (!_isAttackEnabled)
             {
@@ -39,12 +67,7 @@ namespace ShootEmUp
                 return;
             }
 
-            _timer.InvalidateLeftTime(Time.fixedDeltaTime);
-        }
-
-        private void Fire()
-        {
-            weaponComponent.ShootAtTarget(_target.transform.position);
+            _timer.InvalidateLeftTime(deltaTime);
         }
     }
 }

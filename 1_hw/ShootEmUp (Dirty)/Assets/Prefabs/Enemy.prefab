@@ -144,8 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce88fee201654f6e8064002ed15de594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody2D: {fileID: 659620479434099170}
-  speed: 7
+  _rigidbody2D: {fileID: 659620479434099170}
+  _speed: 5
 --- !u!114 &5568771391735819373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae5daa1be9cc40a78a2f07cd53e5b47e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 3
+  _hitPoints: 1
 --- !u!114 &5568771391735819374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,8 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce164c84a74a425f8d2e82764aef9e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 3195880656587174614}
-  bulletConfig: {fileID: 11400000, guid: c734dc4acb82f42029b2f15f4ca32e82, type: 2}
+  _firePoint: {fileID: 3195880656587174614}
+  _bulletConfig: {fileID: 11400000, guid: c734dc4acb82f42029b2f15f4ca32e82, type: 2}
 --- !u!114 &8186052948131603766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,8 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bdb5771141e4cf18c434a69ec116e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveComponent: {fileID: 5568771391735819372}
-  targetPositionRadius: 0.25
+  _moveComponent: {fileID: 5568771391735819372}
+  _targetPositionRadius: 0.25
 --- !u!114 &6896809305229427933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,8 +199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba7965842e74a9f89ba3aa66d61da46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdown: 1
-  weaponComponent: {fileID: 5568771391735819374}
+  _countdown: 1
+  _weaponComponent: {fileID: 5568771391735819374}
 --- !u!114 &1005247559520965043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,8 +213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4435f285c1741719e695ecfaae5225d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMoveAgent: {fileID: 8186052948131603766}
-  enemyAttackAgent: {fileID: 6896809305229427933}
+  _enemyMoveAgent: {fileID: 8186052948131603766}
+  _enemyAttackAgent: {fileID: 6896809305229427933}
 --- !u!114 &1637674027230759634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67be5b5c520346edb486d44b8ed67a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPointsComponent: {fileID: 5568771391735819373}
+  _hitPointsComponent: {fileID: 5568771391735819373}
 --- !u!114 &6069904502763594117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f49fd4fe744959ab18d886633ce5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponComponent: {fileID: 5568771391735819374}
+  _weaponComponent: {fileID: 5568771391735819374}
 --- !u!1 &2239154907127902911
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,10 +7,10 @@ namespace ShootEmUp
     {
         public event Action<BulletData> OnBulletShootListener;
 
-        [SerializeField] private Transform firePoint;
-        [SerializeField] private BulletConfig bulletConfig;
+        [SerializeField] private Transform _firePoint;
+        [SerializeField] private BulletConfig _bulletConfig;
 
-        private Vector2 Position => firePoint.position;
+        private Vector2 Position => _firePoint.position;
 
         public void ShootAtTarget(Vector2 target)
         {
@@ -20,7 +20,7 @@ namespace ShootEmUp
 
         public void Shoot(Vector3 direction)
         {
-            var bullet = BulletData.FabricateBulletData(bulletConfig, Position, direction);
+            var bullet = BulletData.FabricateBulletData(_bulletConfig, Position, direction);
             OnBulletShootListener?.Invoke(bullet);
         }
     }

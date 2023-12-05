@@ -8,10 +8,10 @@ namespace ShootEmUp
     )]
     public sealed class BulletConfig : ScriptableObject
     {
-        public Team team = Team.None;
-        public PhysicsLayer physicsLayer;
-        public Color color;
-        public int damage;
-        public float speed;
+        public Team Team = Team.None;
+        public PhysicsLayer PhysicsLayer;
+        public Color Color;
+        public int Damage;
+        public float Speed;
     }
 }

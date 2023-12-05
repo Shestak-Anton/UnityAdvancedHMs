@@ -1,20 +1,21 @@
 using System;
+using LifeCycle;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class OutOfBoundsHandler : MonoBehaviour
+    public sealed class OutOfBoundsHandler : MonoBehaviour, ILifeCycle.IFixedUpdateListener
     {
         public event Action<BulletComponent> OnBoundsIntersectListener;
 
-        [SerializeField] private BulletComponent bullet;
+        [SerializeField] private BulletComponent _bullet;
         [NonSerialized] public LevelBounds LevelBounds;
 
-        private void FixedUpdate()
+        void ILifeCycle.IFixedUpdateListener.OnFixedUpdate(float deltaTime)
         {
-            if (!LevelBounds.InBounds(bullet.transform.position))
+            if (!LevelBounds.InBounds(_bullet.transform.position))
             {
-                OnBoundsIntersectListener?.Invoke(bullet);
+                OnBoundsIntersectListener?.Invoke(_bullet);
             }
         }
     }

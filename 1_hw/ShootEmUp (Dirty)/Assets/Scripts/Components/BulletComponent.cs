@@ -1,14 +1,18 @@
 using System;
+using GameLoop;
 using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class BulletComponent : MonoBehaviour
+    public sealed class BulletComponent : MonoBehaviour,
+        IGameEvent.IPauseGameListener,
+        IGameEvent.IStartGameListener,
+        IGameEvent.IEndGameListener
     {
         public event Action<BulletComponent, Collision2D> OnCollisionEntered;
 
-        [SerializeField] private new Rigidbody2D rigidbody2D;
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private new Rigidbody2D _rigidbody2D;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
 
         public BulletData BulletData
         {
@@ -26,10 +30,30 @@ namespace ShootEmUp
         private void SetBulletData(BulletData bulletData)
         {
             _bulletData = bulletData;
-            rigidbody2D.velocity = bulletData.Velocity;
             gameObject.layer = bulletData.PhysicsLayer;
             transform.position = bulletData.Position;
-            spriteRenderer.color = bulletData.Color;
+            _spriteRenderer.color = bulletData.Color;
+            SetVelocity(bulletData.Velocity);
+        }
+
+        private void SetVelocity(Vector2 velocity)
+        {
+            _rigidbody2D.velocity = velocity;
+        }
+
+        void IGameEvent.IPauseGameListener.OnGamePaused()
+        {
+            SetVelocity(Vector2.zero);
+        }
+
+        void IGameEvent.IStartGameListener.OnGameStarted()
+        {
+            SetVelocity(_bulletData.Velocity);
+        }
+
+        void IGameEvent.IEndGameListener.OnEndGame()
+        {
+            SetVelocity(Vector2.zero);
         }
     }
 }
