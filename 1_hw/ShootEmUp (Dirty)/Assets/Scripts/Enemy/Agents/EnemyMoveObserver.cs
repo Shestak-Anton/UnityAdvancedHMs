@@ -12,12 +12,12 @@ namespace ShootEmUp
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            _enemyMoveAgent.OnDestinationReachedListener += _enemyAttackAgent.EnableAttacking;
+            _enemyMoveAgent.OnDestinationReached += _enemyAttackAgent.EnableAttacking;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            _enemyMoveAgent.OnDestinationReachedListener -= _enemyAttackAgent.EnableAttacking;
+            _enemyMoveAgent.OnDestinationReached -= _enemyAttackAgent.EnableAttacking;
         }
     }
 }

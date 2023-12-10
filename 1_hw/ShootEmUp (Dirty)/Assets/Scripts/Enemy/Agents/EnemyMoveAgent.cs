@@ -11,7 +11,7 @@ namespace ShootEmUp
         IGameEvent.IStartGameListener,
         IGameEvent.IEndGameListener
     {
-        public event Action OnDestinationReachedListener;
+        public event Action OnDestinationReached;
 
         [SerializeField] private MoveComponent _moveComponent;
         [SerializeField] private float _targetPositionRadius = 0.25f;
@@ -42,7 +42,7 @@ namespace ShootEmUp
             if (vector.magnitude <= _targetPositionRadius)
             {
                 _isReached = true;
-                OnDestinationReachedListener?.Invoke();
+                OnDestinationReached?.Invoke();
                 return;
             }
 

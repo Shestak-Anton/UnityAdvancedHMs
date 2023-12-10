@@ -12,12 +12,12 @@ namespace ShootEmUp
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            _inputManager.OnShootListener += Shoot;
+            _inputManager.OnShoot += Shoot;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            _inputManager.OnShootListener -= Shoot;
+            _inputManager.OnShoot -= Shoot;
         }
 
         private void Shoot()

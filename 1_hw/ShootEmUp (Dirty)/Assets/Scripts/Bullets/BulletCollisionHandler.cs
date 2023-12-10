@@ -8,7 +8,7 @@ namespace ShootEmUp
         ILifeCycle.IDisableListener,
         ILifeCycle.IEnableListener
     {
-        public event Action<BulletComponent> OnBulletCollidedListener;
+        public event Action<BulletComponent> OnBulletCollided;
 
         [SerializeField] private BulletComponent _bullet;
 
@@ -25,14 +25,14 @@ namespace ShootEmUp
         private void OnBulletCollision(BulletComponent bulletComponent, Collision2D collision)
         {
             TryDealDamage(collision.gameObject, bulletComponent.BulletData.Damage);
-            OnBulletCollidedListener?.Invoke(bulletComponent);
+            OnBulletCollided?.Invoke(bulletComponent);
         }
 
         private static void TryDealDamage(GameObject collidedGo, int damage)
         {
-            if (collidedGo.TryGetComponent(out DamageDealerComponent damageDealer))
+            if (collidedGo.TryGetComponent(out HitPointsComponent hitPointsComponent))
             {
-                damageDealer.DealDamage(damage);
+                hitPointsComponent.TakeDamage(damage);
             }
         }
     }

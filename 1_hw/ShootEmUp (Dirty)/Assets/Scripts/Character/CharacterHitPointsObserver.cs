@@ -13,12 +13,12 @@ namespace ShootEmUp
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            _hitPointsComponent.OnHpEmptyListener += FinishGame;
+            _hitPointsComponent.OnHpEmpty += FinishGame;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            _hitPointsComponent.OnHpEmptyListener -= FinishGame;
+            _hitPointsComponent.OnHpEmpty -= FinishGame;
         }
 
         private void FinishGame(GameObject _)

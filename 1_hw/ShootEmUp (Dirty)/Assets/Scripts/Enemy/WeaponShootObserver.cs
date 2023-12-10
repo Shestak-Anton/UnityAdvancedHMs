@@ -19,12 +19,12 @@ namespace ShootEmUp
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            _weaponComponent.OnBulletShootListener += _bulletsShooterSystem.ShootBullet;
+            _weaponComponent.OnBulletShoot += _bulletsShooterSystem.ShootBullet;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            _weaponComponent.OnBulletShootListener -= _bulletsShooterSystem.ShootBullet;
+            _weaponComponent.OnBulletShoot -= _bulletsShooterSystem.ShootBullet;
         }
     }
 }

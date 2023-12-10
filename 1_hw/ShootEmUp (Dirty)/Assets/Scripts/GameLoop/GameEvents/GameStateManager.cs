@@ -7,6 +7,7 @@ namespace GameLoop
         private readonly List<IGameEvent> _gameEventComponents = new();
 
         private GameState _gameState = GameState.None;
+        public GameState GameState => _gameState;
 
         public void ApplyState(GameState gameState)
         {

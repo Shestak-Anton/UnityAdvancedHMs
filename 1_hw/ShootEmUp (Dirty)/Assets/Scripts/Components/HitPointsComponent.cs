@@ -9,7 +9,7 @@ namespace ShootEmUp
         IGameEvent.IStartGameListener,
         ILifeCycle.ICreateListener
     {
-        public event Action<GameObject> OnHpEmptyListener;
+        public event Action<GameObject> OnHpEmpty;
 
         [SerializeField] private int _hitPoints;
 
@@ -30,7 +30,7 @@ namespace ShootEmUp
             _hitPoints -= damage;
             if (_hitPoints <= 0)
             {
-                OnHpEmptyListener?.Invoke(gameObject);
+                OnHpEmpty?.Invoke(gameObject);
             }
         }
 

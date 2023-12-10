@@ -8,8 +8,8 @@ namespace ShootEmUp
 {
     public sealed class BulletsShooterSystem : MonoBehaviour, IGameEvent.IEndGameListener
     {
-        public event Action<GameObject> OnNewBulletAddedListener;
-        public event Action<GameObject> OnBulletRemovedListener;
+        public event Action<GameObject> OnNewBulletAdded;
+        public event Action<GameObject> OnBulletRemoved;
 
         [SerializeField] private BulletPool _bulletPool;
         [SerializeField] private LevelBounds _levelBounds;
@@ -21,21 +21,21 @@ namespace ShootEmUp
             var bullet = _bulletPool.DequeueBullet(bulletData);
             if (_activeBullets.Add(bullet))
             {
-                OnNewBulletAddedListener?.Invoke(bullet.gameObject);
-                bullet.GetComponent<BulletCollisionHandler>().OnBulletCollidedListener += RemoveBullet;
+                OnNewBulletAdded?.Invoke(bullet.gameObject);
+                bullet.GetComponent<BulletCollisionHandler>().OnBulletCollided += RemoveBullet;
 
                 var outOfBoundsObserver = bullet.GetComponent<OutOfBoundsHandler>();
                 outOfBoundsObserver.LevelBounds = _levelBounds;
-                outOfBoundsObserver.OnBoundsIntersectListener += RemoveBullet;
+                outOfBoundsObserver.OnBoundsIntersect += RemoveBullet;
             }
         }
 
         private void RemoveBullet(BulletComponent bulletComponent)
         {
             if (!_activeBullets.Remove(bulletComponent)) return;
-            OnBulletRemovedListener?.Invoke(bulletComponent.gameObject);
-            bulletComponent.GetComponent<BulletCollisionHandler>().OnBulletCollidedListener -= RemoveBullet;
-            bulletComponent.GetComponent<OutOfBoundsHandler>().OnBoundsIntersectListener -= RemoveBullet;
+            OnBulletRemoved?.Invoke(bulletComponent.gameObject);
+            bulletComponent.GetComponent<BulletCollisionHandler>().OnBulletCollided -= RemoveBullet;
+            bulletComponent.GetComponent<OutOfBoundsHandler>().OnBoundsIntersect -= RemoveBullet;
             _bulletPool.EnqueueBullet(bulletComponent);
         }
 

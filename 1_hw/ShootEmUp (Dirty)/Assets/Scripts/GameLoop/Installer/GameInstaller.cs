@@ -1,17 +1,18 @@
 using GameLoop;
+using GameLoop.LifeCycle;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
     public class GameInstaller : MonoBehaviour
     {
-        [SerializeField] private GameStateService _gameStateService;
-        [SerializeField] private GameLifeCycleService _gameLifeCycleService;
+        [SerializeField] private GameLifeCycleServiceInstaller _gameLifeCycleServiceInstaller;
+        [SerializeField] private GameStateServiceInstaller _gameStateServiceInstaller;
 
         private void Awake()
         {
-            Install(_gameLifeCycleService);
-            Install(_gameStateService);
+            Install(_gameLifeCycleServiceInstaller);
+            Install(_gameStateServiceInstaller);
         }
 
         private static void Install(IServiceInstaller serviceInstaller)

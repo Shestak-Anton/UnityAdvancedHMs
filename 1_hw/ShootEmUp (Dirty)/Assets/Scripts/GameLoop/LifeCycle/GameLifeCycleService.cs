@@ -4,36 +4,43 @@ using UnityEngine;
 
 namespace GameLoop
 {
-    public class GameLifeCycleService : MonoBehaviour, IServiceInstaller
+    public class GameLifeCycleService : MonoBehaviour
     {
+        [SerializeField] private GameStateService _gameStateService;
+
         private LifeCycleComponentsRegistry _componentsRegistry;
-        private bool _isInitialized;
 
-        void IServiceInstaller.Install()
+        // void IServiceInstaller.Install()
+        // {
+        //     _componentsRegistry = new LifeCycleComponentsRegistry();
+        //     foreach (var rootGameObject in gameObject.scene.GetRootGameObjects())
+        //     {
+        //         foreach (var lifeCycle in rootGameObject.GetComponentsInChildren<ILifeCycle>())
+        //         {
+        //             Register(lifeCycle);
+        //         }
+        //     }
+        //
+        //     _componentsRegistry.PerformCreation();
+        //     _componentsRegistry.PerformEnable();
+        // }
+
+        public void Init(LifeCycleComponentsRegistry componentsRegistry)
         {
-            _componentsRegistry = new LifeCycleComponentsRegistry();
-            _isInitialized = true;
-            foreach (var rootGameObject in gameObject.scene.GetRootGameObjects())
-            {
-                foreach (var lifeCycle in rootGameObject.GetComponentsInChildren<ILifeCycle>())
-                {
-                    Register(lifeCycle);
-                }
-            }
-
+            _componentsRegistry = componentsRegistry;
             _componentsRegistry.PerformCreation();
             _componentsRegistry.PerformEnable();
         }
 
         private void Update()
         {
-            if (!_isInitialized) return;
+            if (_gameStateService.GameState != GameState.GamePlay) return;
             _componentsRegistry.PerformUpdate();
         }
 
         private void FixedUpdate()
         {
-            if (!_isInitialized) return;
+            if (_gameStateService.GameState != GameState.GamePlay) return;
             _componentsRegistry.PerformFixedUpdate(Time.deltaTime);
         }
 
@@ -68,7 +75,7 @@ namespace GameLoop
             }
         }
 
-        private void Register(ILifeCycle lifeCycle)
+        public void Register(ILifeCycle lifeCycle)
         {
             _componentsRegistry.AddComponent(lifeCycle);
         }
