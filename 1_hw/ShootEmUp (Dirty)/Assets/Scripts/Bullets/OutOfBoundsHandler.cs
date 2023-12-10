@@ -6,7 +6,7 @@ namespace ShootEmUp
 {
     public sealed class OutOfBoundsHandler : MonoBehaviour, ILifeCycle.IFixedUpdateListener
     {
-        public event Action<BulletComponent> OnBoundsIntersectListener;
+        public event Action<BulletComponent> OnBoundsIntersect;
 
         [SerializeField] private BulletComponent _bullet;
         [NonSerialized] public LevelBounds LevelBounds;
@@ -15,7 +15,7 @@ namespace ShootEmUp
         {
             if (!LevelBounds.InBounds(_bullet.transform.position))
             {
-                OnBoundsIntersectListener?.Invoke(_bullet);
+                OnBoundsIntersect?.Invoke(_bullet);
             }
         }
     }

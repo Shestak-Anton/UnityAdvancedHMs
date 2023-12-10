@@ -5,7 +5,7 @@ namespace ShootEmUp
 {
     public sealed class WeaponComponent : MonoBehaviour
     {
-        public event Action<BulletData> OnBulletShootListener;
+        public event Action<BulletData> OnBulletShoot;
 
         [SerializeField] private Transform _firePoint;
         [SerializeField] private BulletConfig _bulletConfig;
@@ -21,7 +21,7 @@ namespace ShootEmUp
         public void Shoot(Vector3 direction)
         {
             var bullet = BulletData.FabricateBulletData(_bulletConfig, Position, direction);
-            OnBulletShootListener?.Invoke(bullet);
+            OnBulletShoot?.Invoke(bullet);
         }
     }
 }

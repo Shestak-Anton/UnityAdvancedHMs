@@ -12,8 +12,8 @@ namespace ShootEmUp
         IGameEvent.IPauseGameListener,
         IGameEvent.IStartGameListener
     {
-        public event Action<Vector2> OnPositionChangedListener;
-        public event Action OnShootListener;
+        public event Action<Vector2> OnPositionChanged;
+        public event Action OnShoot;
 
         private IInputManager _inputManager;
         private Vector2 _direction = Vector2.zero;
@@ -35,14 +35,14 @@ namespace ShootEmUp
         private void HandleMoveInput()
         {
             _direction = _inputManager.HandlePositionChangeInput();
-            OnPositionChangedListener?.Invoke(_direction * Time.fixedDeltaTime);
+            OnPositionChanged?.Invoke(_direction * Time.fixedDeltaTime);
         }
 
         private void HandleShootInput()
         {
             if (_inputManager.ShouldShoot())
             {
-                OnShootListener?.Invoke();
+                OnShoot?.Invoke();
             }
         }
 

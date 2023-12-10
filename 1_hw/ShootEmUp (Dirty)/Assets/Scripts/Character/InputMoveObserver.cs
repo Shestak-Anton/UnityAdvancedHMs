@@ -12,12 +12,12 @@ namespace ShootEmUp
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            _inputManager.OnPositionChangedListener += _moveComponent.MoveByRigidbodyVelocity;
+            _inputManager.OnPositionChanged += _moveComponent.MoveByRigidbodyVelocity;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            _inputManager.OnPositionChangedListener -= _moveComponent.MoveByRigidbodyVelocity;
+            _inputManager.OnPositionChanged -= _moveComponent.MoveByRigidbodyVelocity;
         }
     }
 }

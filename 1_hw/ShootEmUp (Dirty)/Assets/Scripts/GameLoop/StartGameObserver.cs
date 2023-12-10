@@ -14,12 +14,12 @@ namespace ShootEmUp
 
         void ILifeCycle.IEnableListener.OnEnable()
         {
-            _pauseScreen.OnStartGameListener += StartGame;
+            _pauseScreen.OnStartGame += StartGame;
         }
 
         void ILifeCycle.IDisableListener.OnDisable()
         {
-            _pauseScreen.OnStartGameListener -= StartGame;
+            _pauseScreen.OnStartGame -= StartGame;
         }
 
         private void StartGame()

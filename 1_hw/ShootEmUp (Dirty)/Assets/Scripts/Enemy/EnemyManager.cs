@@ -15,8 +15,8 @@ namespace ShootEmUp
         IGameEvent.IPauseGameListener,
         IGameEvent.IEndGameListener
     {
-        public event Action<GameObject> OnNewEnemyAddedListener;
-        public event Action<GameObject> OnEnemyRemovedListener;
+        public event Action<GameObject> OnNewEnemyAdded;
+        public event Action<GameObject> OnEnemyRemoved;
 
         [SerializeField] private FixedPool _fixedPool;
         [SerializeField] private float _spawnTimeInterval = 1;
@@ -55,10 +55,10 @@ namespace ShootEmUp
         {
             if (!_fixedPool.TryDequeue(out var enemy)) return;
             _enemyInstaller.InstallEnemy(enemy);
-            OnNewEnemyAddedListener?.Invoke(enemy);
+            OnNewEnemyAdded?.Invoke(enemy);
             if (_activeEnemies.Add(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener += OnDestroyed;
+                enemy.GetComponent<HitPointsComponent>().OnHpEmpty += OnDestroyed;
             }
         }
 
@@ -69,8 +69,8 @@ namespace ShootEmUp
                 return;
             }
 
-            OnEnemyRemovedListener?.Invoke(enemy);
-            enemy.GetComponent<HitPointsComponent>().OnHpEmptyListener -= OnDestroyed;
+            OnEnemyRemoved?.Invoke(enemy);
+            enemy.GetComponent<HitPointsComponent>().OnHpEmpty -= OnDestroyed;
             _fixedPool.Enqueue(enemy);
         }
     }

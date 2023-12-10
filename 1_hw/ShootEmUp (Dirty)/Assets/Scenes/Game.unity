@@ -692,7 +692,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1602106919}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -708,8 +709,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c110d935fc740639a008522e95905b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateService: {fileID: 1340080943}
-  _gameLifeCycleService: {fileID: 1340080944}
+  _gameLifeCycleServiceInstaller: {fileID: 1602106920}
+  _gameStateServiceInstaller: {fileID: 1602106918}
 --- !u!114 &1340080943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,6 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ddc7ffbda6242a4b759cd8ebb3f4f43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameStateService: {fileID: 1340080943}
 --- !u!1 &1536551910
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,6 +799,65 @@ Transform:
   m_Father: {fileID: 9048567252472711235}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1602106917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1602106919}
+  - component: {fileID: 1602106920}
+  - component: {fileID: 1602106918}
+  m_Layer: 0
+  m_Name: Installer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1602106918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602106917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb09ff05e4de4de79d3d6855e97ad7da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameStateService: {fileID: 1340080943}
+--- !u!4 &1602106919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602106917}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1340080941}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1602106920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602106917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdd697a162f84db1a1628c79a641f6ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameLifeCycleService: {fileID: 1340080944}
 --- !u!1 &1683128697
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,8 +1512,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3951702117947426122}
   - component: {fileID: 3951702117947426126}
-  - component: {fileID: 3951702117947426123}
   - component: {fileID: 3951702117947426127}
+  - component: {fileID: 3951702117947426128}
   m_Layer: 0
   m_Name: '[GAME_SYSTEM]'
   m_TagString: Untagged
@@ -1479,18 +1540,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3951702117947426123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3951702117947426121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 697fe7ba192e484db495320b9c01bcd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3951702117947426126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1506,7 +1555,6 @@ MonoBehaviour:
   _gameLifeCycleService: {fileID: 1340080944}
   _gameStateService: {fileID: 1340080943}
   _enemyManager: {fileID: 562298205}
-  _bulletsShooterSystem: {fileID: 363245578}
 --- !u!114 &3951702117947426127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1521,6 +1569,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pauseScreen: {fileID: 206288859}
   _gameStateService: {fileID: 1340080943}
+--- !u!114 &3951702117947426128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3951702117947426121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2dba812d83f45ab88fe104d18079e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameLifeCycleService: {fileID: 1340080944}
+  _gameStateService: {fileID: 1340080943}
+  _bulletsShooterSystem: {fileID: 363245578}
 --- !u!212 &4162873433806880330
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1652,9 +1715,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _params:
-    _startPositionY: 0
-    _endPositionY: 0
-    _movingSpeedY: 0
+    StartPositionY: 0
+    EndPositionY: 0
+    MovingSpeedY: 0
 --- !u!1 &4914023371208914563
 GameObject:
   m_ObjectHideFlags: 0

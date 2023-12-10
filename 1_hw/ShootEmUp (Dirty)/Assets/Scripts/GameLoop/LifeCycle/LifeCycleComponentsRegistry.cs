@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace LifeCycle
 {
-    internal sealed class LifeCycleComponentsRegistry
+    public sealed class LifeCycleComponentsRegistry
     {
         private readonly List<ILifeCycle.ICreateListener> _creates = new();
         private readonly List<ILifeCycle.IEnableListener> _enables = new();

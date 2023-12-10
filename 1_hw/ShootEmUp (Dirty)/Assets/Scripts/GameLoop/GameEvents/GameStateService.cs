@@ -3,24 +3,16 @@ using UnityEngine;
 
 namespace GameLoop
 {
-    public class GameStateService : MonoBehaviour, IServiceInstaller
+    public class GameStateService : MonoBehaviour
     {
         [SerializeField] private GameState _gameState = GameState.Pause;
+        public GameState GameState => _gameState;
 
         private GameStateManager _gameStateManager;
 
-        void IServiceInstaller.Install()
+        public void Init(GameStateManager gameStateManager)
         {
-            _gameStateManager = new GameStateManager();
-
-            foreach (var rootGameObject in gameObject.scene.GetRootGameObjects())
-            {
-                foreach (var gameEvent in rootGameObject.GetComponentsInChildren<IGameEvent>())
-                {
-                    _gameStateManager.Register(gameEvent);
-                }
-            }
-
+            _gameStateManager = gameStateManager;
             _gameStateManager.ApplyState(_gameState);
         }
 

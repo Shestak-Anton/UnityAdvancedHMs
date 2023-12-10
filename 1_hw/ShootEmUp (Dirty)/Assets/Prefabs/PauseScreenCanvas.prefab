@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startGameTimer: {fileID: 5047985318264960582}
-  _startButton: {fileID: 5047985319083983598}
+  _startButton: {fileID: 5047985319083983584}
 --- !u!1 &5047985319083983598
 GameObject:
   m_ObjectHideFlags: 0
